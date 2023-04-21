@@ -1,0 +1,3 @@
+#!/bin/bash
+
+afl-fuzz -d -i  ${WORKDIR}/in-tls -x ${WORKDIR}/ssh.dict -o $WORKDIR/aflnet-result/ -N tcp://127.0.0.1/22 -P SSH -D 10000 -q 3 -s 3 -E -K -W 10 ./sshd -d -e -p 22 -r -f sshd_config
