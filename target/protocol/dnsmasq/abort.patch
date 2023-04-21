@@ -1,0 +1,18 @@
+diff --git a/src/forward.c b/src/forward.c
+index f375069..8171735 100644
+--- a/src/forward.c
++++ b/src/forward.c
+@@ -1348,8 +1348,13 @@ static size_t answer_disallowed(struct dns_header *header, size_t qlen, u32 mark
+ }
+ #endif
+ 
++int aaa = 0;
++
+ void receive_query(struct listener *listen, time_t now)
+ {
++       if(aaa==10)
++               abort();
++       aaa++;
+   struct dns_header *header = (struct dns_header *)daemon->packet;
+   union mysockaddr source_addr;
+   unsigned char *pheader;

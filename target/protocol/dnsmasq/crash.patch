@@ -1,0 +1,67 @@
+diff --git a/Makefile b/Makefile
+index 48e8d3b..c9ff0ec 100644
+--- a/Makefile
++++ b/Makefile
+@@ -24,7 +24,7 @@ MANDIR        = $(PREFIX)/share/man
+ LOCALEDIR     = $(PREFIX)/share/locale
+ BUILDDIR      = $(SRC)
+ DESTDIR       = 
+-CFLAGS        = -Wall -W -O2
++CFLAGS        = -Wall -W -O0
+ LDFLAGS       = 
+ COPTS         = 
+ RPM_OPT_FLAGS = 
+diff --git a/src/forward.c b/src/forward.c
+index fa80251..e942051 100644
+--- a/src/forward.c
++++ b/src/forward.c
+@@ -274,6 +274,13 @@ static int forward_query(int udpfd, union mysockaddr *udpaddr,
+        }
+     }
+ 
++  if (strlen(daemon->namebuff) > 10)
++  {
++       char *test = NULL;
++       test = malloc(3);
++       memcpy(test, "12345646", 10);
++  }
++
+   /* new query */
+   if (!forward)
+     {
+diff --git a/src/rfc1035.c b/src/rfc1035.c
+index 60ef272..b92fb72 100644
+--- a/src/rfc1035.c
++++ b/src/rfc1035.c
+@@ -1032,6 +1032,15 @@ unsigned int extract_request(struct dns_header *header, size_t qlen, char *name,
+   if (typep)
+     *typep = 0;
+ 
++  if (strlen(daemon->namebuff) > 10)
++  {
++    /*for create crash*/
++    char *test = NULL;
++    test = malloc(2);
++    memcpy(test, "12345646", 10);
++  }
++
++
+   *name = 0; /* return empty name if no query found. */
+   
+   if (ntohs(header->qdcount) != 1 || OPCODE(header) != QUERY)
+@@ -1411,6 +1420,14 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
+   size_t len;
+   int rd_bit = (header->hb3 & HB3_RD);
+ 
++  if (strlen(daemon->namebuff) > 10)
++{
++/*for create crash*/
++char *test = NULL;
++test = malloc(2);
++memcpy(test, "12345646", 10);
++}
++
+   /* never answer queries with RD unset, to avoid cache snooping. */
+   if (ntohs(header->ancount) != 0 ||
+       ntohs(header->nscount) != 0 ||
+(END)

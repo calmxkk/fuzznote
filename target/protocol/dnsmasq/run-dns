@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$WORKDIR/dnsmasq/src/dnsmasq --dhcp-range=fd00::2,fd00::ff --enable-ra --add-mac --add-subnet=24,96 $1
