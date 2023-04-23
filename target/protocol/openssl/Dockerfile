@@ -43,9 +43,6 @@ RUN mkdir -p $WORKDIR && \
     chmod -R 777 /tmp &&\
     mkdir -p $WORKDIR/aflnet-result
 
-RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
-RUN git clone https://github.com/jtpereyda/boofuzz.git
-
 # Set up aflnet
 RUN git clone https://github.com/calmxkk/aflnet.git && \
     cd aflnet && \
