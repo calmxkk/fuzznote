@@ -49,13 +49,12 @@ RUN git clone https://github.com/jtpereyda/boofuzz.git
 # Set up aflnet
 RUN git clone https://github.com/calmxkk/aflnet.git && \
     cd aflnet && \
-    git pull && \
     make clean all $MAKE_OPT && \
     cd llvm_mode && make $MAKE_OPT
 
-# Download and compile OpenSSL for fuzzing
-RUN cd ${WORKDIR} && \
-    git clone https://github.com/openssl/openssl.git
+# Download and compile LightFTP for fuzzing
+RUN cd $WORKDIR && \
+    git clone https://github.com/hfiref0x/LightFTP.git
 
 # Set up environment variables for AFLNet
 ENV WORKDIR="/root/workspace"
@@ -71,19 +70,23 @@ ENV UBSAN_OPTIONS='print_stacktrace=1'
 
 ARG GIT_TAG
 
-COPY --chown=root:root key.pem ${WORKDIR}/key.pem
-COPY --chown=root:root cert.pem ${WORKDIR}/cert.pem
-COPY --chown=root:root rand.patch ${WORKDIR}/rand.patch
+COPY --chown=root:root fuzzing.patch ${WORKDIR}/fuzzing.patch
 
-RUN cd ${WORKDIR}/openssl && \
-    cp ${WORKDIR}/*.pem ./ && \
+RUN cd $WORKDIR && cd LightFTP && \
     git checkout ${GIT_TAG} && \
-    CC=afl-clang-fast ./config no-shared && \
-    AFL_USE_ASAN=1 CC=afl-clang-fast make $MAKE_OPT
+    patch -p1 < ${WORKDIR}/fuzzing.patch && \
+    cd Source/Release && \
+    AFL_USE_ASAN=1 CC=afl-clang-fast make clean all $MAKE_OPT
 
-COPY --chown=root:root in-tls ${WORKDIR}/in-tls
-COPY --chown=root:root tls.dict ${WORKDIR}/tls.dict
+# Set up LightFTP for aflnet fuzzing
+RUN cd ${WORKDIR}/LightFTP/Source/Release && \
+    cp ${AFLNET}/tutorials/lightftp/fftp.conf ./ && \
+    cp ${AFLNET}/tutorials/lightftp/ftpclean.sh ${WORKDIR} && \
+    cp -r ${AFLNET}/tutorials/lightftp/certificate /root/ && \
+    mkdir -p /root/ftpshare
+
+COPY --chown=root:root in-ftp ${WORKDIR}/in-ftp
+COPY --chown=root:root ftp.dict ${WORKDIR}/ftp.dict
+COPY --chown=root:root clean.sh ${WORKDIR}/ftpclean
+
 COPY --chown=root:root run-aflnet ${WORKDIR}/run-aflnet
-
-RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
-RUN git clone https://github.com/calmxkk/boofuzz.git && cd boofuzz && git pull
