@@ -33,9 +33,6 @@ RUN echo 'root:root' | chpasswd
 USER root
 WORKDIR /root/
 
-RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
-RUN git clone https://github.com/jtpereyda/boofuzz.git
-
 # Set up aflnet
 RUN git clone https://github.com/calmxkk/aflnet.git && \
     cd aflnet && \
@@ -44,6 +41,11 @@ RUN git clone https://github.com/calmxkk/aflnet.git && \
 
 ENV WORKDIR="/root/workspace"
 ENV PATH="${PATH}:${WORKDIR}"
+
+# set corefile dir
+RUN mkdir -p /corefile/ && \
+    chmod -R 777 /corefile/ && \
+    ulimit -c unlimited
 
 RUN mkdir -p $WORKDIR && \
     mkdir -p /tmp && \
@@ -88,7 +90,5 @@ RUN echo address=/calmxkk.com/5.6.56.57 | sudo tee -a /etc/dnsmasq.conf && \
     mkdir ${WORKDIR}/tftpdir && \
     cp /etc/dnsmasq.conf ${WORKDIR}/tftpdir
 
-# set corefile dir
-RUN mkdir -p /corefile/ && \
-    chmod -R 777 /corefile/
-RUN ulimit -c unlimited
+RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
+RUN git clone https://github.com/calmxkk/boofuzz.git
