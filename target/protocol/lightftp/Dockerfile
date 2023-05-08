@@ -44,7 +44,7 @@ RUN mkdir -p $WORKDIR && \
     mkdir -p $WORKDIR/aflnet-result
 
 RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
-RUN git clone https://github.com/jtpereyda/boofuzz.git
+RUN git clone https://github.com/calmxkk/boofuzz.git && cd boofuzz && git pull && cd ..
 
 # Set up aflnet
 RUN git clone https://github.com/calmxkk/aflnet.git && \
@@ -74,19 +74,19 @@ COPY --chown=root:root fuzzing.patch ${WORKDIR}/fuzzing.patch
 
 RUN cd $WORKDIR && cd LightFTP && \
     git checkout ${GIT_TAG} && \
-    patch -p1 < ${WORKDIR}/fuzzing.patch && \
+    # patch -p1 < ${WORKDIR}/fuzzing.patch && \
     cd Source/Release && \
     AFL_USE_ASAN=1 CC=afl-clang-fast make clean all $MAKE_OPT
 
 # Set up LightFTP for aflnet fuzzing
 RUN cd ${WORKDIR}/LightFTP/Source/Release && \
-    cp ${AFLNET}/tutorials/lightftp/fftp.conf ./ && \
-    cp ${AFLNET}/tutorials/lightftp/ftpclean.sh ${WORKDIR} && \
     cp -r ${AFLNET}/tutorials/lightftp/certificate /root/ && \
-    mkdir -p /root/ftpshare
+    mkdir -p /root/ftpshare && \
+    ln -sf $WORKDIR/LightFTP/Source/Release/fftp $WORKDIR/fftp
 
 COPY --chown=root:root in-ftp ${WORKDIR}/in-ftp
 COPY --chown=root:root ftp.dict ${WORKDIR}/ftp.dict
 COPY --chown=root:root clean.sh ${WORKDIR}/ftpclean
+COPY --chown=root:root fftp.conf ${WORKDIR}/fftp.conf
 
 COPY --chown=root:root run-aflnet ${WORKDIR}/run-aflnet
