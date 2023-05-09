@@ -11,8 +11,21 @@ index 48e8d3b..c9ff0ec 100644
  LDFLAGS       = 
  COPTS         = 
  RPM_OPT_FLAGS = 
+diff --git a/src/config.h b/src/config.h
+index 1e7b30f..77f6eb7 100644
+--- a/src/config.h
++++ b/src/config.h
+@@ -184,7 +184,7 @@ RESOLVFILE
+ #define HAVE_IPSET 
+ #define HAVE_LOOP
+ #define HAVE_DUMPFILE
+-
++#define HAVE_DNSSEC
+ /* Build options which require external libraries.
+    
+    Defining HAVE_<opt>_STATIC as _well_ as HAVE_<opt> will link the library statically.
 diff --git a/src/forward.c b/src/forward.c
-index fa80251..e942051 100644
+index 0f03818..7a6e128 100644
 --- a/src/forward.c
 +++ b/src/forward.c
 @@ -274,6 +274,13 @@ static int forward_query(int udpfd, union mysockaddr *udpaddr,
@@ -30,10 +43,10 @@ index fa80251..e942051 100644
    if (!forward)
      {
 diff --git a/src/rfc1035.c b/src/rfc1035.c
-index 60ef272..b92fb72 100644
+index 5c0df56..264ce88 100644
 --- a/src/rfc1035.c
 +++ b/src/rfc1035.c
-@@ -1032,6 +1032,15 @@ unsigned int extract_request(struct dns_header *header, size_t qlen, char *name,
+@@ -1034,6 +1034,15 @@ unsigned int extract_request(struct dns_header *header, size_t qlen, char *name,
    if (typep)
      *typep = 0;
  
@@ -49,19 +62,3 @@ index 60ef272..b92fb72 100644
    *name = 0; /* return empty name if no query found. */
    
    if (ntohs(header->qdcount) != 1 || OPCODE(header) != QUERY)
-@@ -1411,6 +1420,14 @@ size_t answer_request(struct dns_header *header, char *limit, size_t qlen,
-   size_t len;
-   int rd_bit = (header->hb3 & HB3_RD);
- 
-+  if (strlen(daemon->namebuff) > 10)
-+{
-+/*for create crash*/
-+char *test = NULL;
-+test = malloc(2);
-+memcpy(test, "12345646", 10);
-+}
-+
-   /* never answer queries with RD unset, to avoid cache snooping. */
-   if (ntohs(header->ancount) != 0 ||
-       ntohs(header->nscount) != 0 ||
-(END)

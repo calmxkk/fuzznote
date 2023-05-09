@@ -68,6 +68,8 @@ ENV UBSAN_OPTIONS='print_stacktrace=1'
 RUN cd $WORKDIR && \
     git clone git://thekelleys.org.uk/dnsmasq.git
 
+RUN apt install -y pkg-config
+
 COPY --chown=root:root crash.patch ${WORKDIR}/crash.patch
 
 ARG GIT_TAG
@@ -76,7 +78,6 @@ RUN cd $WORKDIR && \
     cd dnsmasq && \
     git checkout ${GIT_TAG} && \
     patch -p1 < ${WORKDIR}/crash.patch && \
-    # sed -i '177i#define HAVE_DNSSEC'  ./src/config.h && \
     AFL_USE_ASAN=1 CC=afl-clang-fast make $MAKE_OPT
 
 COPY --chown=root:root dnsmasq.conf /etc/dnsmasq.conf
