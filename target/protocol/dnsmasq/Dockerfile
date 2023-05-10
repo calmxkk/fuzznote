@@ -33,9 +33,6 @@ RUN echo 'root:root' | chpasswd
 USER root
 WORKDIR /root/
 
-RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
-RUN git clone https://github.com/jtpereyda/boofuzz.git
-
 # Set up aflnet
 RUN git clone https://github.com/calmxkk/aflnet.git && \
     cd aflnet && \
@@ -44,6 +41,11 @@ RUN git clone https://github.com/calmxkk/aflnet.git && \
 
 ENV WORKDIR="/root/workspace"
 ENV PATH="${PATH}:${WORKDIR}"
+
+# set corefile dir
+RUN mkdir -p /corefile/ && \
+    chmod -R 777 /corefile/ && \
+    ulimit -c unlimited
 
 RUN mkdir -p $WORKDIR && \
     mkdir -p /tmp && \
@@ -66,6 +68,8 @@ ENV UBSAN_OPTIONS='print_stacktrace=1'
 RUN cd $WORKDIR && \
     git clone git://thekelleys.org.uk/dnsmasq.git
 
+RUN apt install -y pkg-config
+
 COPY --chown=root:root crash.patch ${WORKDIR}/crash.patch
 
 ARG GIT_TAG
@@ -74,7 +78,6 @@ RUN cd $WORKDIR && \
     cd dnsmasq && \
     git checkout ${GIT_TAG} && \
     patch -p1 < ${WORKDIR}/crash.patch && \
-    # sed -i '177i#define HAVE_DNSSEC'  ./src/config.h && \
     AFL_USE_ASAN=1 CC=afl-clang-fast make $MAKE_OPT
 
 COPY --chown=root:root dnsmasq.conf /etc/dnsmasq.conf
@@ -88,7 +91,5 @@ RUN echo address=/calmxkk.com/5.6.56.57 | sudo tee -a /etc/dnsmasq.conf && \
     mkdir ${WORKDIR}/tftpdir && \
     cp /etc/dnsmasq.conf ${WORKDIR}/tftpdir
 
-# set corefile dir
-RUN mkdir -p /corefile/ && \
-    chmod -R 777 /corefile/
-RUN ulimit -c unlimited
+RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
+RUN git clone https://github.com/calmxkk/boofuzz.git && cd boofuzz && git pull

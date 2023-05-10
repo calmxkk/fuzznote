@@ -30,15 +30,6 @@ RUN echo 'root:root' | chpasswd
 USER root
 WORKDIR /root/
 
-RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
-RUN git clone https://github.com/jtpereyda/boofuzz.git
-
-# Set up aflnet
-RUN git clone https://github.com/calmxkk/aflnet.git && \
-    cd aflnet && \
-    make clean all $MAKE_OPT && \
-    cd llvm_mode && make $MAKE_OPT
-
 ENV WORKDIR="/root/workspace"
 ENV PATH="${PATH}:${WORKDIR}"
 
@@ -52,6 +43,17 @@ RUN mkdir -p $WORKDIR && \
     chmod -R 777 /tmp &&\
     mkdir -p $WORKDIR/aflnet-result
 
+# Set up aflnet
+RUN git clone https://github.com/calmxkk/aflnet.git && \
+    cd aflnet && \
+    git pull && \
+    make clean all $MAKE_OPT && \
+    cd llvm_mode && make $MAKE_OPT
+
+# Download and compile OpenSSL for fuzzing
+RUN cd ${WORKDIR} && \
+    git clone https://github.com/openssl/openssl.git
+
 # Set up environment variables for AFLNet
 ENV WORKDIR="/root/workspace"
 ENV AFLNET="/root/aflnet"
@@ -61,13 +63,8 @@ ENV AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 \
     AFL_SKIP_CPUFREQ=1 \
     AFL_NO_AFFINITY=1
 
-# Set up environment variables for ASAN
-ENV ASAN_OPTIONS='log_path=/tmp/asan.log:symbolize=1:disable_coredump=0:handle_segv=1:abort_on_error=1:symbolize=1:detect_leaks=0:detect_stack_use_after_return=1:detect_container_overflow=0:poison_array_cookie=0:malloc_fill_byte=0:max_malloc_fill_size=16777216'
+ENV ASAN_OPTIONS='log_path=/tmp/asan.log:symbolize=0:disable_coredump=0:handle_segv=1:abort_on_error=1:symbolize=1:detect_leaks=0:detect_stack_use_after_return=1:detect_container_overflow=0:poison_array_cookie=0:malloc_fill_byte=0:max_malloc_fill_size=16777216'
 ENV UBSAN_OPTIONS='print_stacktrace=1'
-
-# Download and compile OpenSSL for fuzzing
-RUN cd ${WORKDIR} && \
-    git clone https://github.com/openssl/openssl.git
 
 ARG GIT_TAG
 
@@ -85,3 +82,5 @@ COPY --chown=root:root in-tls ${WORKDIR}/in-tls
 COPY --chown=root:root tls.dict ${WORKDIR}/tls.dict
 COPY --chown=root:root run-aflnet ${WORKDIR}/run-aflnet
 
+RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
+RUN git clone https://github.com/calmxkk/boofuzz.git && cd boofuzz && git pull
