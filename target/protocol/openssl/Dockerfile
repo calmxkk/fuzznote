@@ -83,5 +83,5 @@ RUN cd ${WORKDIR}/openssl && \
 
 COPY --chown=root:root in-tls ${WORKDIR}/in-tls
 COPY --chown=root:root tls.dict ${WORKDIR}/tls.dict
-COPY --chown=root:root run.sh ${WORKDIR}/run
+COPY --chown=root:root run-aflnet ${WORKDIR}/run-aflnet
 
