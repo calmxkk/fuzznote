@@ -88,5 +88,4 @@ COPY --chown=root:root in-ftp ${WORKDIR}/in-ftp
 COPY --chown=root:root ftp.dict ${WORKDIR}/ftp.dict
 COPY --chown=root:root clean.sh ${WORKDIR}/ftpclean
 COPY --chown=root:root fftp.conf ${WORKDIR}/fftp.conf
-
 COPY --chown=root:root run-aflnet ${WORKDIR}/run-aflnet

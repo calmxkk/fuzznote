@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo install -p -m 644 /root/frr/tools/frr.service /usr/lib/systemd/system/frr.service
+sudo systemctl preset frr.service
+sudo systemctl enable frr
+sudo systemctl start frr

@@ -70,7 +70,7 @@ ENV UBSAN_OPTIONS='print_stacktrace=1'
 
 ARG GIT_TAG
 
-COPY --chown=root:root fuzzing.patch ${WORKDIR}/fuzzing.patch
+COPY --chown=root:root malloc.patch ${WORKDIR}/malloc.patch
 
 RUN cd $WORKDIR && cd proftpd && \
     git checkout ${GIT_TAG} && \
@@ -86,7 +86,3 @@ COPY --chown=root:root cov_script.sh ${WORKDIR}/cov_script
 
 RUN mkdir -p ${WORKDIR}/ftpshare && \
     chown -R root:root ${WORKDIR}/ftpshare
-
-
-
-COPY --chown=root:root run-aflnet ${WORKDIR}/run-aflnet
