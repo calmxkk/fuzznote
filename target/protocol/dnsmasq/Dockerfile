@@ -22,10 +22,9 @@ RUN apt-get -y update && \
     netcat \
     strace \
     wget \
-    ftp
+    libcap-dev
 
-RUN apt-get -y update && \
-    apt-get -y install sudo libcap-dev
+RUN apt-get -y install ftp pkg-config
 
 RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com gcovr==4.2 --default-timeout=1000 
 
@@ -68,22 +67,19 @@ ENV UBSAN_OPTIONS='print_stacktrace=1'
 RUN cd $WORKDIR && \
     git clone git://thekelleys.org.uk/dnsmasq.git
 
-RUN apt install -y pkg-config
+ARG GIT_TAG
 
 COPY --chown=root:root crash.patch ${WORKDIR}/crash.patch
-
-ARG GIT_TAG
+COPY --chown=root:root dnsmasq.conf /etc/dnsmasq.conf
+COPY --chown=root:root trust-anchors.conf /etc/trust-anchors.conf
+COPY --chown=root:root run-dns ${WORKDIR}/run-dns
+COPY --chown=root:root abort.patch ${WORKDIR}/abort.patch
 
 RUN cd $WORKDIR && \
     cd dnsmasq && \
     git checkout ${GIT_TAG} && \
     patch -p1 < ${WORKDIR}/crash.patch && \
     AFL_USE_ASAN=1 CC=afl-clang-fast make $MAKE_OPT
-
-COPY --chown=root:root dnsmasq.conf /etc/dnsmasq.conf
-COPY --chown=root:root trust-anchors.conf /etc/trust-anchors.conf
-COPY --chown=root:root run-dns ${WORKDIR}/run-dns
-COPY --chown=root:root abort.patch ${WORKDIR}/abort.patch
 
 RUN echo address=/calmxkk.com/5.6.56.57 | sudo tee -a /etc/dnsmasq.conf && \
     chown -R root:root ${WORKDIR}/dnsmasq/src && \
@@ -92,4 +88,4 @@ RUN echo address=/calmxkk.com/5.6.56.57 | sudo tee -a /etc/dnsmasq.conf && \
     cp /etc/dnsmasq.conf ${WORKDIR}/tftpdir
 
 RUN pip3 install -i http://pypi.douban.com/simple --trusted-host pypi.douban.com boofuzz==0.4.1 --default-timeout=1000
-RUN git clone https://github.com/calmxkk/boofuzz.git && cd boofuzz && git pull
+RUN git clone https://github.com/calmxkk/boofuzz.git
