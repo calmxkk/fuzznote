@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach>
+
+    <Include ns="dns" src="file:./dns_state.xml" />
+
+    <!-- Monitor -->
+    <Agent name="TheAgent">
+        <Monitor class="RunCommand">
+            <Param name="Command" value="python" />
+            <Param name="Arguments" value="./monitor.py" />
+            <Param name="FaultOnNonZeroExit" value="true" />
+            <Param name="When" value="OnIterationEnd" />
+        </Monitor>
+    </Agent>
+
+    <!-- 设置maxOutputSize以防止产生过大数据包 -->
+    <Test name="Default" maxOutputSize="100000">
+        <!-- 变异策略 -->
+        <Strategy class="Random">
+            <Param name="MaxFieldsToMutate" value="6" />
+            <Param name="SwitchCount" value="200" />
+        </Strategy>
+
+        <Mutators mode="exclude">
+            <Mutator class="DataElementDuplicate" />
+            <Mutator class="DataElementRemove" />
+            <Mutator class="DataElementSwapNearNodes" />
+            <Mutator class="DataElementSwapNear" />
+        </Mutators>
+
+        <!-- 指定要使用的状态模型 -->
+        <StateModel ref="dns:State" />
+
+        <!-- 指定Publisher -->
+        <Publisher class="Udp">
+            <Param name="Host" value="##HOST##" />
+            <Param name="Port" value="##PORT##" />
+        </Publisher>
+
+        <!-- <Agent ref="TheAgent" /> -->
+
+        <Logger class="File">
+            <Param name="Path" value="Logs/" />
+        </Logger>
+    </Test>
+</Peach>

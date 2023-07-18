@@ -1,0 +1,18 @@
+Peach was unable to create a TCP connection to a remote host.
+
+Host: 192.168.5.133
+Port: (1)
+
+This usually means the device/software under test:
+
+ 1. Crashed or exited during testing
+ 2. Overwhelmed and could not respond correctly 
+ 3. In an invalid state and non responsive 
+ 4. Had just restarted and was unable to process the request 
+
+This can happen during testing when a series of test cases cause the 
+target service to misbehave or even crash.
+
+Extended error information:
+
+Network is unreachable

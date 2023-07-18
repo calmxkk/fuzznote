@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+    <DataModel name="Chunk">
+        <Number name="Length" size="32" signed="false" endian="big">
+            <Relation type="size" of="Data" />
+        </Number>
+
+        <Block name="TypeAndData">
+            <String name="Type" length="4" />
+            <Blob name="Data" />
+        </Block>
+
+        <Number name="CRC" size="32" endian="big">
+            <Fixup class="Crc32Fixup">
+                <Param name="ref" value="TypeAndData" />
+            </Fixup>
+        </Number>
+    </DataModel>
+
+    <DataModel name="Png">
+        <Blob name="pngSignature" valueType="hex" value="89 50 4E 47 0D 0A 1A 0A" token="true" />
+        <Block ref="Chunk" minOccurs="1" maxOccurs="1024" />
+    </DataModel>
+
+    <StateModel name="TheState" initialState="Initial">
+        <State name="Initial">
+            <!-- 输出png文件 -->
+            <Action type="output">
+                <DataModel ref="Png" />
+                <Data name="data" fileName="/root/workspace/peach-test/pits/samples_png/PngSuite.png" />
+            </Action>
+
+            <!-- 关闭png文件 -->
+            <Action type="close" />
+
+        </State>
+    </StateModel>
+
+
+    <Test name="Default">
+        <StateModel ref="TheState" />
+        <Publisher class="File">
+            <Param name="FileName" value="/root/peach-test/pits/png/fuzzedCircle.png" />
+        </Publisher>
+
+        <Logger class="File">
+            <Param name="Path" value="pngLogs" />
+        </Logger>
+    </Test>
+</Peach>

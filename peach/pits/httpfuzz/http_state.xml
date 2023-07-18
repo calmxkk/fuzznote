@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+    <Include ns="http" src="./http_data.xml" />
+    <StateModel name="State1" initialState="Initial">
+        <State name="Initial">
+            <Action type="output">
+                <DataModel ref="http:httpRequest" />
+                <Data ref="http:httpGet" />
+            </Action>
+        </State>
+    </StateModel>
+
+    <StateModel name="State2" initialState="Initial">
+        <State name="Initial">
+            <Action type="output">
+                <DataModel ref="http:httpRequest" />
+                <Data ref="http:httpOptions" />
+            </Action>
+        </State>
+    </StateModel>
+</Peach>

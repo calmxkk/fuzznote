@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+    <Defaults>
+        <Number endian="big" />
+    </Defaults>
+
+    <DataModel name="BgpHeader">
+        <Blob name="Marker" valueType="hex" value="ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff"
+            mutable="false"></Blob>
+        <Number name="Length" size="16" mutable="false" />
+        <Number name="Type" size="8" mutable="false" />
+    </DataModel>
+
+    <DataModel name="OpenMessage">
+        <Block ref="BgpHeader">
+            <Number name="Length" size="16" mutable="false">
+                <Relation type="size" of="OpenMessage" />
+            </Number>
+            <Number name="Type" size="8" value="1" mutable="false" />
+        </Block>
+
+        <Number name="Version" size="8" value="4" />
+        <Number name="MyAS" size="16" value="800" />
+        <Number name="HoldTime" value="180" size="16" />
+        <String name='BGPId' value="192.168.10.10">
+            <Transformer class='Ipv4StringToOctet' />
+        </String>
+    </DataModel>
+
+    <!-- <origin -->
+    <DataModel name="originAttr">
+        <Blob name="flag" valueType="hex" value="40" mutable="false"/>
+        <Number name="code" value="1" size="8" mutable="false"/>
+        <Number name="len" size="8" mutable="false">
+            <Relation type="size" of="value" />
+        </Number>
+        <Number name="value" value="1" size="8" />
+    </DataModel>
+
+    <!-- aspath -->
+    <DataModel name="aspathAttr">
+        <Blob name="flag" valueType="hex" value="40" mutable="false"/>
+        <Number name="code" value="2" size="8" mutable="false" />
+        <Number name="len" size="8" mutable="false">
+            <Relation type="size" of="value" expressionSet="size/16" />
+        </Number>
+        <Number name="value" value="65000" size="16" />
+    </DataModel>
+
+    <!-- nexthop -->
+    <DataModel name="nexthopAttr">
+        <Blob name="flag" valueType="hex" value="40" />
+        <Number name="code" value="3" size="8" mutable="false"/>
+        <Number name="len" size="8" mutable="false">
+            <Relation type="size" of="value" />
+        </Number>
+        <!-- 192.168.0.33 -->
+        <Blob valueType="hex" value="c0 a8 00 21" />
+    </DataModel>
+
+    <!-- med -->
+    <DataModel name="medAttr">
+        <Blob name="flag" valueType="hex" value="80" mutable="false"/>
+        <Number name="code" value="4" size="8" mutable="false"/>
+        <Number name="len" size="8" mutable="false">
+            <Relation type="size" of="value" />
+        </Number>
+        <Number name="value" value="65000" size="32" />
+    </DataModel>
+
+    <!-- localPref -->
+    <DataModel name="localPrefAttr">
+        <Blob name="flag" valueType="hex" value="80" mutable="false"/>
+        <Number name="code" value="5" size="8" mutable="false"/>
+        <Number name="len" size="8" mutable="false">
+            <Relation type="size" of="value" />
+        </Number>
+        <Number name="value" value="65000" size="32" />
+    </DataModel>
+
+    <!-- community -->
+    <DataModel name="communityAttr">
+        <Blob name="flag" valueType="hex" value="c0" mutable="false"/>
+        <Number name="code" value="8" size="8" mutable="false"/>
+        <Number name="len" size="8" mutable="false">
+            <Relation type="size" of="value" />
+        </Number>
+        <Number name="value" value="65000" size="32" />
+    </DataModel>
+
+    <!-- mp_reach_nlri -->
+    <DataModel name="MP_REACH_NLRI">
+        <Blob name="flag" valueType="hex" value="90" mutable="false" />
+        <Number name="code" value="14" size="8" mutable="false" />
+        <Number name="len" size="16" endian="big" mutable="false">
+            <Relation type="size" of="mp_value" />
+        </Number>
+        <Block name="mp_value">
+            <Number name="afi" value="0x0001" valueType="hex" size="16" endian="big" />
+            <Number name="safi" value="0x05" valueType="hex" size="8" />
+            <Number name="mpNexthopLen" size="8">
+                <Relation type="size" of="mpNexthop" />
+            </Number>
+            <Block name="mpNexthop">
+                <!-- 120.0.2.1 -->
+                <Blob valueType="hex" value="78000201" />
+            </Block>
+            <Number name="snpa" value="0" size="8" />
+            <Block name="ESI">
+                <Block name="evpn_nlri">
+                    <Number name="rouetType" value="0x01" size="8" />
+                    <Number name="esiLen" size="8">
+                        <Relation type="size" of="esi" />
+                    </Number>
+                    <Block name="esi">
+                        <Blob valueType="hex" value="00017800020100" />
+                        <Blob valueType="hex" value="00" />
+                        <Blob valueType="hex" value="000000000010000005" />
+                        <Blob valueType="hex" value="ffffff" />
+                        <Blob valueType="hex" value="000001" />
+                    </Block>
+                </Block>
+            </Block>
+        </Block>
+    </DataModel>
+
+    <!-- pmsi tunnel  -->
+    <DataModel name="pmsiTunnelAttr">
+        <Blob name="flag" valueType="hex" value="c0" mutable="false"/>
+        <Number name="code" value="22" size="8" mutable="false" />
+        <Number name="len" size="8" mutable="false">
+            <Relation type="size" of="pmsi_value" />
+        </Number>
+        <Block name="pmsi_value">
+            <Number name="pmsi_flag" valueType="hex" value="10" size="8" />
+            <Number name="pmsi_type" valueType="hex" value="03" size="8" />
+            <Number name="pmsi_mpls_label" valueType="hex" value="000000" size="24" />
+            <Number name="tunnelIdentifier" value="0" size="64" />
+        </Block>
+    </DataModel>
+
+    <!-- pmsi tunnel  -->
+    <DataModel name="otherAttr">
+        <Blob name="flag" valueType="hex" value="c0" mutable="false"/>
+        <Number name="code" value="22" size="8"/>
+        <Number name="len" size="8" mutable="false">
+            <Relation type="size" of="pmsi_value" />
+        </Number>
+        <Block name="otherAttr_value">
+            <Number name="otherAttr_flag" valueType="hex" value="10" size="8" />
+            <Number name="otherAttr_type" valueType="hex" value="03" size="8" />
+            <Number name="otherAttr_mpls_label" valueType="hex" value="000000" size="24" />
+            <Number name="other" value="0" size="64" />
+        </Block>
+    </DataModel>
+
+    <DataModel name="UpdateMessage">
+        <Block ref="BgpHeader">
+            <Number name="Length" size="16" mutable="false">
+                <Relation type="size" of="UpdateMessage" />
+            </Number>
+            <Number name="Type" size="8" value="2" mutable="false" />
+        </Block>
+
+        <Block name="updateBody">
+            <!-- withdraw -->
+            <Number name="withdrawLength" size="16" value="0" mutable="false" endian="big" />
+            <!-- <Relation type="size" of="withdrawRoute" /> -->
+            <!-- <Block name="withdrawRoute" mutable="false" /> -->
+
+            <!-- attr -->
+            <Number name="attrLength" size="16" mutable="false">
+                <Relation type="size" of="attr" />
+            </Number>
+            <Block name="attr">
+
+                <Block name="origin" ref="originAttr" />
+                <Block name="aspath" ref="aspathAttr" />
+                <Block name="nexthop" ref="nexthopAttr" />
+                <Block name="med" ref="medAttr" />
+                <Block name="localPref" ref="localPrefAttr" />
+                <Block name="community" ref="communityAttr" />
+                <Block name="mp_reach_nlri" ref="MP_REACH_NLRI" />
+                <Block name="pmsi" ref="pmsiTunnelAttr" />
+                <Block name="other" ref="otherAttr" />
+
+
+                <!-- network layer reachability information -->
+                <Block name="NLRI">
+                    <Block name="route1" minOccurs="1" maxOccurs="99999">
+                        <Number name="mask" value="16" size="8" />
+                        <Blob name="flag" valueType="hex" value="0a 0a" />
+                    </Block>
+                    <Block name="route2" minOccurs="1" maxOccurs="99999">
+                        <Number name="mask" value="24" size="8" />
+                        <Blob name="flag" valueType="hex" value="c0 0a 0a" />
+                    </Block>
+                </Block>
+
+            </Block>
+        </Block>
+    </DataModel>
+</Peach>

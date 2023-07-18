@@ -1,0 +1,15 @@
+Peach Fuzzing Run
+=================
+
+Date of run: 10/19/2022 5:42:22 PM
+Peach Version: 0.0.0.1
+Seed: 17526
+Command line: png-test.xml
+Pit File: png-test.xml
+Strategy: Random
+. Test starting: Default
+
+. Record Iteration 1
+.  Iteration 1 : 10/19/2022 5:42:24 PM
+.  Iteration 100 : 10/19/2022 5:42:28 PM
+. Test finished: Default

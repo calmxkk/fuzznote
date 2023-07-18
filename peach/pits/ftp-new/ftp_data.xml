@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+    <!-- <Include ns="default" src="file:defaults.xml" /> -->
+
+
+    <!--     Data Models      -->
+    <DataModel name="DDataUSER">
+        <String value="USER calmxkk\r\n" />
+    </DataModel>
+
+    <DataModel name="DDataPASS">
+        <String value="PASS 123456\r\n" />
+    </DataModel>
+
+    <DataModel name="DDataPORT">
+        <String value="PORT 192.168.5.133,4,1\r\n" />
+    </DataModel>
+
+    <DataModel name="DDataREST">
+        <String value="REST 9999\r\n" />
+    </DataModel>
+
+    <DataModel name="DDataMKD">
+        <String value="MKD test\r\n" />
+    </DataModel>
+
+    <DataModel name="DDataRNFR">
+        <String value="RNFR test\r\n" />
+    </DataModel>
+
+    <DataModel name="DDataQUIT">
+        <String value="QUIT\r\n" token="true" mutable="false" />
+    </DataModel>
+
+    <!-- Response -->
+    <DataModel name="DataResponse">
+        <String name="response" />
+    </DataModel>
+
+
+    <!--
+          RFC 959
+    -->
+    <!-- USER [username]: login with the specified username -->
+    <DataModel name="DataUSER">
+        <String value="USER " />
+        <String value="" />
+        <String value="calmxkk" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- PASS [password]: login with the specified password -->
+    <DataModel name="DataPASS">
+        <String value="PASS " />
+        <String value="" />
+        <String value="123456" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- QUIT: terminate a connection with the server. -->
+    <DataModel name="DataQUIT">
+        <String value="QUIT" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- HELP [command]: return the command's help -->
+    <DataModel name="DataHELP">
+        <String value="HELP " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- ACCT [account]: identify user's account -->
+    <DataModel name="DataACCT">
+        <String value="ACCT " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- CWD [dir]: change working directory on the server. -->
+    <DataModel name="DataCWD">
+        <String value="CWD " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- CDUP: change to parent directory -->
+    <DataModel name="DataCDUP">
+        <String value="CDUP " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- SMNT [path]: mount filesystem -->
+    <DataModel name="DataSMNT">
+        <String value="SMNT " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- REIN (arg): reinitialize user, requires relogin -->
+    <DataModel name="DataREIN">
+        <String value="REIN " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- PORT [h1,h2,h3,h4,p1,p2]: specify host/port to be used -->
+    <DataModel name="DataPORT">
+        <String value="PORT 0,0,0,0,0,0\r\n" />
+        <!--<Block minOccurs="1" maxOccurs="1">
+      <String value="PORT "/>
+      <Number size="8"/> 
+      <String value=","/>
+      <Number size="8" endian="little"/> 
+      <String value=","/>
+      <Number size="8" signed="false" /> 
+      <String value=","/>
+      <Number size="8" signed="false" endian="little"/> 
+      <String value=","/>
+      <Number size="8" signed="false" endian="little"/> 
+      <String value=","/>
+      <Number size="8" signed="false" endian="little"/> 
+      <String value="\r\n"/>
+    </Block>-->
+    </DataModel>
+
+    <!-- PASV: enter passive mode to let client connect to the
+       server.
+  -->
+    <DataModel name="DataPASV">
+        <String value="PASV " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- TYPE [type_first] [type_second]: set the type of file to be transfered -->
+    <DataModel name="DataTYPE1">
+        <String value="TYPE " />
+        <String length="1" value="A" />
+        <Block minOccurs="0" maxOccurs="1">
+            <String length="1" mutable="true">
+                <Hint name="ValidValues" value="N;T;C" />
+            </String>
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataTYPE2">
+        <String value="TYPE " />
+        <String length="1" value="E" />
+        <Block minOccurs="0" maxOccurs="1">
+            <String length="1" mutable="true">
+                <Hint name="ValidValues" value="N;T;C" />
+            </String>
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataTYPE3">
+        <String value="TYPE " />
+        <String length="1" value="I" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataTYPE4">
+        <String value="TYPE " />
+        <String length="1" value="L" />
+        <Number size="8" signed="false" endian="little" />
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <!-- STRU [structure]: sets the file structure -->
+    <DataModel name="DataSTRU">
+        <String value="STRU " />
+        <Block minOccurs="0" maxOccurs="1">
+            <String length="1" mutable="true">
+                <Hint name="ValidValues" value="F;R;P" />
+            </String>
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- MODE [mode]: sets the transfer mode -->
+    <DataModel name="DataMODE">
+        <String value="MODE " />
+        <String length="1" mutable="true">
+            <Hint name="ValidValues" value="S;B;C" />
+        </String>
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <!-- RETR [file]: retrieve a remote file from the server. -->
+    <DataModel name="DataRETR">
+        <String value="RETR " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- STOR [file]: store a file on the server  -->
+    <DataModel name="DataSTOR">
+        <String value="STOR " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- STOU [file]: store a file on the server -->
+    <DataModel name="DataSTOU">
+        <String value="STOU " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- APPE [file]: append to a remote file  -->
+    <DataModel name="DataAPPE">
+        <String value="APPE " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- ALLO [size] [R max_record_size]: allocate storaga space to receive a file. Optionally follows letter 'R' and maximum size of a record.  -->
+    <DataModel name="DataALLO">
+        <String value="ALLO " />
+        <Number size="32" signed="false" endian="little" valueType="string" mutable="true"></Number>
+        <Block minOccurs="0" maxOccurs="1">
+            <String length="1" value=" " />
+            <String length="1" value="R" />
+            <String length="1" value=" " />
+            <Number size="32" signed="false" endian="little" />
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <!-- REST [char]*: Restart file transfer. -->
+    <!-- TODO: arg has characters in range ascii(33)-ascii(126) -->
+    <DataModel name="DataREST">
+        <String value="REST " mutable="false" />
+        <String value="" />
+        <String value="\r\n" mutable="false" />
+    </DataModel>
+
+
+    <!-- RNFR [name]: Specify the name of the file to be renamed. -->
+    <DataModel name="DataRNFR">
+        <String value="RNFR " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- RNTO [name]: Specify the name the file is to be renamed into. -->
+    <DataModel name="DataRNTO">
+        <String value="RNTO " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- ABOR: Abort the previous FTP service command. -->
+    <DataModel name="DataABOR">
+        <String value="ABOR " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- DELE [name]: Delete the file on server-side. -->
+    <DataModel name="DataDELE">
+        <String value="DELE " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- RMD [dir]: Delete the directory. -->
+    <DataModel name="DataRMD">
+        <String value="RMD " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- MKD [dir]: Create a directory. -->
+    <DataModel name="DataMKD">
+        <String value="MKD " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- PWD: Print working directory. -->
+    <DataModel name="DataPWD">
+        <String value="PWD " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- LIST [path]: List remote files. -->
+    <DataModel name="DataLIST">
+        <String value="LIST" />
+        <Block minOccurs="0" maxOccurs="1">
+            <String value=" " />
+            <String value="" />
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- NLST [path]: Name list remote files. -->
+    <DataModel name="DataNLST">
+        <String value="NLST" />
+        <Block minOccurs="0" maxOccurs="1">
+            <String value=" " />
+            <String value="" />
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- SITE [string]: Site specific command. -->
+    <DataModel name="DataSITE">
+        <String value="SITE " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- SYST: Return type of OS on the server. -->
+    <DataModel name="DataSYST">
+        <String value="SYST " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- STAT [path]: Return server status. -->
+    <DataModel name="DataSTAT">
+        <String value="STAT" />
+        <Block minOccurs="0" maxOccurs="1">
+            <String value=" " />
+            <String value="" />
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <!-- NOOP: Do nothing. -->
+    <DataModel name="DataNOOP">
+        <String value="NOOP " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- HOST [string]: connect to specified virtual host. -->
+    <DataModel name="DataHOST">
+        <String value="HOST " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <!-- 
+
+       RFC 2228
+
+  -->
+
+    <!-- AUTH: [string]: Site specific command. -->
+    <DataModel name="DataAUTH">
+        <String value="AUTH " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <!-- TODO: binary string: ADAT <SP> <bstring> <CRLF> -->
+    <DataModel name="DataADAT">
+        <String value="ADAT " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataPROT">
+        <String value="PROT " />
+        <String length="1" mutable="true">
+            <Hint name="ValidValues" value="C;S;E;P" />
+        </String>
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataPBSZ">
+        <String value="PBSZ " />
+        <Number size="32" signed="false" endian="little" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataCCC">
+        <String value="CCC " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataMIC">
+        <String value="MIC " />
+        <String value="">
+            <Transformer class="encode.Base64Encode" />
+        </String>
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataCONF">
+        <String value="CONF " />
+        <String value="">
+            <Transformer class="encode.Base64Encode" />
+        </String>
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataENC">
+        <String value="ENC " />
+        <String value="">
+            <Transformer class="encode.Base64Encode" />
+        </String>
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataALGS">
+        <String value="ALGS " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <DataModel name="DataEPRT">
+        <String value="EPRT " />
+        <String length="1" value="|" />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="|" />
+        <Block minOccurs="1" maxOccurs="1">
+            <Number size="8" signed="false" endian="little" />
+            <String length="1" value="." />
+            <Number size="8" signed="false" endian="little" />
+            <String length="1" value="." />
+            <Number size="8" signed="false" endian="little" />
+            <String length="1" value="." />
+            <Number size="8" signed="false" endian="little" />
+        </Block>
+        <String length="1" value="|" />
+        <Number size="16" signed="false" endian="little" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataEPSV">
+        <String value="EPSV " />
+        <Number size="8" signed="false" endian="little" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataFEAT">
+        <String value="FEAT " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataOPTS">
+        <String value="OPTS " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <DataModel name="DataLANG">
+        <String value="LANG" />
+        <Block minOccurs="0" maxOccurs="1">
+            <String value=" " />
+            <String value="" />
+            <String value="-" />
+            <String value="" />
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <DataModel name="DataLPRT">
+        <String value="LPRT " />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="," />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="," />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="," />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="," />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="," />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="," />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="," />
+        <Number size="8" signed="false" endian="little" />
+        <String length="1" value="," />
+        <Number size="8" signed="false" endian="little" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataLPSV">
+        <String value="LPSV " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <DataModel name="DataMDTM">
+        <String value="MDTM " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataMLST">
+        <String value="MLST" />
+        <Block minOccurs="0" maxOccurs="1">
+            <String length="1" value=" " />
+            <String value="" />
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataMLSD">
+        <String value="MLSD" />
+        <Block minOccurs="0" maxOccurs="1">
+            <String length="1" value=" " />
+            <String value="" />
+        </Block>
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataSIZE">
+        <String value="SIZE " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+
+    <DataModel name="DataXRMD">
+        <String value="XRMD " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataXMKD">
+        <String value="XMKD " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataXPWD">
+        <String value="XPWD" />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataXCWD">
+        <String value="XCWD " />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="DataXCUP">
+        <String value="XCUP" />
+        <String value="" />
+        <String value="\r\n" />
+    </DataModel>
+</Peach>

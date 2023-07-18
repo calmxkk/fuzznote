@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+ <DataModel name="ModbusTCP"> 
+   <Number name="TransactionId" size="16" />
+   <Number name="ProtocoId" size="16" value="0"  mutable="false"/>
+   <Number name="DataLength" size="16"  signed="false" endian="big">
+	<Relation type="size" of="UnitIdAndData"/>
+   </Number>
+   <Block name="UnitIdAndData">
+	   <Number name="UnitId" size="8" value="1" mutable="false"/>  <!-- 不加mutable="false" 说明要对该数值进行fuzz -->
+		<Block name="ReadCoils">
+		   <Number name="ReadCoilsFuncionCode" size="8" value="1" />
+		   <Number name="StartAddress" size="16" endian="big" />
+		   <Number name="NumberOfCoils" size="16" endian="big" />
+		</Block>
+  </Block>
+ </DataModel>
+
+ <StateModel name="StateVfolder" initialState="initial">
+   <State name="initial">
+    <Action type="output">
+      <DataModel ref="ModbusTCP" />
+    </Action>
+  </State>
+ </StateModel>
+
+ <!--使用socket进行监听端口 -->
+ <Agent name="Local">
+  <Monitor class="Socket">
+   <Param name="Host" value="127.0.0.1" />
+   <Param name="port" value="502" />
+  </Monitor>
+ </Agent>
+
+ <!--log保存-->
+ <Test name="Default">
+  <Agent ref="Local" />
+  <StateModel ref="StateVfolder" />
+  <Logger class="File">
+   <Param name="Path" value="logs" />
+  </Logger>
+
+  <Publisher class="tcp.Tcp">
+   <Param name="Host" value="127.0.0.1" />
+   <Param name="Port" value="502" /> 
+  </Publisher>
+
+ </Test>
+</Peach>

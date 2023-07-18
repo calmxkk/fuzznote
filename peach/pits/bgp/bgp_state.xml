@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach>
+
+    <Include ns="bgp" src="file:./bgp_data.xml" />
+
+    <!-- 定义状态模型 initialState表示初始状态 -->
+    <StateModel name="State" initialState="State1">
+        <!-- 定义状态 -->
+        <State name="State1">
+            <!-- 具体动作，output表示外发数据 -->
+            <Action name="sendData" type="output">
+                <DataModel ref="bgp:UpdateMessage" />
+            </Action>
+        </State>
+    </StateModel>
+
+</Peach>

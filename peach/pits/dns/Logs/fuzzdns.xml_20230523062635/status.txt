@@ -1,0 +1,14 @@
+Peach Fuzzing Run
+=================
+
+Date of run: 05/23/2023 06:26:35
+Peach Version: 0.0.0.1
+Seed: 36668
+Command line: fuzzdns.xml
+Pit File: fuzzdns.xml
+Strategy: Random
+. Test starting: Default
+
+. Record Iteration 1
+.  Iteration 1 : 05/23/2023 06:26:39
+. Test finished: Default

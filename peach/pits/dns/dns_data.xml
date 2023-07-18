@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+    <Defaults>
+        <Number endian="big" />
+    </Defaults>
+
+    <DataModel name="Header">
+        <Number name="ID" size="16" signed="false" value="1234" />
+
+        <Number name="QR" size="1" mutable="false" />
+        <Number name="Opcode" size="4" mutable="false" />
+        <Number name="AA" size="1" mutable="false" />
+        <Number name="TC" size="1" mutable="false" />
+        <Number name="RD" size="1" value="1" mutable="false" />
+        <Number name="RA" size="1" mutable="false" />
+        <Number name="Z" size="3" mutable="false" />
+        <Number name="RCODE" size="4" mutable="false" />
+
+        <Number name="QDCOUNT" size="16" mutable="true" />
+        <Number name="ANCOUNT" size="16" mutable="true" />
+        <Number name="NSCOUNT" size="16" mutable="true" />
+        <Number name="ARCOUNT" size="16" mutable="true" />
+    </DataModel>
+
+    <DataModel name="Label">
+        <Number name="flag" size="2" value="0" mutable="true" />
+        <Number name="size" size="6">
+            <Relation type="size" of="id" />
+        </Number>
+        <String name="id" nullTerminated="false" />
+    </DataModel>
+
+    <DataModel name="Labels">
+        <Block ref="Label" occurs="1">
+            <String name="id" value="google" nullTerminated="false" />
+        </Block>
+        <Block ref="Label" occurs="1">
+            <String name="id" value="com" nullTerminated="false" />
+        </Block>
+    </DataModel>
+
+    <DataModel name="QNAME">
+        <Choice>
+            <Block ref="Labels">
+                <Blob name="NULL" length="1" valueType="hex" mutable="true" value="00" />
+            </Block>
+            <Block ref="Labels">
+                <Number name="flag" value="3" size="2" mutable="true" />
+                <Number size="14" />
+            </Block>
+            <Block>
+                <Number name="flag" value="3" size="2" mutable="true" />
+                <Number size="14" />
+            </Block>
+        </Choice>
+    </DataModel>
+
+    <DataModel name="ANSWER">
+        <Block name="query" ref="QNAME" />
+        <Number name="QTYPE" size="16" valueType="hex" mutable="true" value="00 01" />
+        <Number name="QCLASS" size="16" valueType="hex" mutable="true" value="00 01" />
+
+        <Number name="TTL" size="32" valueType="hex" mutable="true" value="00 00 00 01" />
+        <Number name="ipaddressLen" size="32">
+            <Relation type="size" of="ipAddress" />
+        </Number>
+        <Blob name="ipAddress" length="4" valueType="hex" mutable="true" value="4a 7d ec 23" />
+    </DataModel>
+
+    <DataModel name="DNSquery" ref="Header">
+        <Number name="QDCOUNT" size="16" mutable="true">
+            <Relation type="count" of="Query" />
+        </Number>
+        <Block name="Query" ref="QNAME" maxOccurs="10">
+            <Number name="QTYPE" size="16" valueType="hex" mutable="true" value="00 01" />
+            <Number name="QCLASS" size="16" valueType="hex" mutable="true" value="00 01" />
+        </Block>
+    </DataModel>
+
+    <DataModel name="DNSresponse" ref="Header">
+        <Number name="QDCOUNT" size="16" mutable="true">
+            <Relation type="count" of="Query" />
+        </Number>
+        <Block name="Query" ref="QNAME" maxOccurs="10">
+            <Number name="QTYPE" size="16" valueType="hex" mutable="true" value="00 01" />
+            <Number name="QCLASS" size="16" valueType="hex" mutable="true" value="00 01" />
+        </Block>
+        <Block name="Response" ref="ANSWER" minOccurs="0" maxOccurs="10" />
+
+    </DataModel>
+
+</Peach>

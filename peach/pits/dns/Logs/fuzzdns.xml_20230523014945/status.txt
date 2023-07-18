@@ -1,0 +1,30 @@
+Peach Fuzzing Run
+=================
+
+Date of run: 05/23/2023 01:49:45
+Peach Version: 0.0.0.1
+Seed: 420
+Command line: fuzzdns.xml
+Pit File: fuzzdns.xml
+Strategy: Random
+. Test starting: Default
+
+. Record Iteration 1
+! Test error:
+Peach.Core.PeachException: Array 'sendResponseData.Response' failed to crack. Only cracked 0 of 10 array entries. ---> Peach.Core.SoftException: Array 'sendResponseData.Response' failed to crack. Only cracked 0 of 10 array entries. ---> Peach.Core.Cracker.CrackingFailure: Array 'sendResponseData.Response' failed to crack. Only cracked 0 of 10 array entries. ---> Peach.Core.Cracker.CrackingFailure: Blob 'sendResponseData.Response.Response_0.ipAddress' failed to crack. Length is 2451144 bits but buffer only has 3720 bits left.
+  at Peach.Core.Dom.DataElement.ReadSizedData (Peach.Core.IO.BitStream data, System.Nullable`1[T] size, System.Int64 read) [0x00112] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Dom/DataElement.cs:1779 
+  at Peach.Core.Dom.DataElement.GetDefaultValue (Peach.Core.IO.BitStream data, System.Nullable`1[T] size) [0x00025] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Dom/DataElement.cs:768 
+  at Peach.Core.Dom.DataElement.Crack (Peach.Core.Cracker.DataCracker context, Peach.Core.IO.BitStream data, System.Nullable`1[T] size) [0x00007] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Dom/DataElement.cs:778 
+  at Peach.Core.Cracker.DataCracker.handleCrack (Peach.Core.Dom.DataElement elem, Peach.Core.IO.BitStream data, System.Nullable`1[T] size) [0x0003e] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Cracker/DataCracker.cs:938 
+  at Peach.Core.Cracker.DataCracker.handleNode (Peach.Core.Dom.DataElement elem, Peach.Core.IO.BitStream data) [0x000b7] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Cracker/DataCracker.cs:555 
+   --- End of inner exception stack trace ---
+  at Peach.Core.Dom.Array.Crack (Peach.Core.Cracker.DataCracker context, Peach.Core.IO.BitStream data, System.Nullable`1[T] size) [0x002f0] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Dom/Array.cs:237 
+  at Peach.Core.Cracker.DataCracker.handleCrack (Peach.Core.Dom.DataElement elem, Peach.Core.IO.BitStream data, System.Nullable`1[T] size) [0x0003e] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Cracker/DataCracker.cs:938 
+  at Peach.Core.Cracker.DataCracker.handleNode (Peach.Core.Dom.DataElement elem, Peach.Core.IO.BitStream data) [0x000b7] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Cracker/DataCracker.cs:555 
+   --- End of inner exception stack trace ---
+  at Peach.Core.Dom.Actions.Input.OnRun (Peach.Core.Publisher pub, Peach.Core.RunContext context) [0x00086] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Dom/Actions/Input.cs:68 
+  at Peach.Core.Dom.Action.Run (Peach.Core.RunContext context) [0x003c3] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Dom/Action.cs:373 
+   --- End of inner exception stack trace ---
+  at Peach.Core.Engine.RunTest () [0x00562] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Engine.cs:590 
+  at Peach.Core.Engine.startFuzzing (Peach.Core.Dom.Dom dom, Peach.Core.Dom.Test test, Peach.Core.RunConfiguration config) [0x000bf] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Engine.cs:257 
+. Test finished: Default

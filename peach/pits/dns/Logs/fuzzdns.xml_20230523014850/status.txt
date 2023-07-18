@@ -1,0 +1,31 @@
+Peach Fuzzing Run
+=================
+
+Date of run: 05/23/2023 01:48:50
+Peach Version: 0.0.0.1
+Seed: 62790
+Command line: fuzzdns.xml
+Pit File: fuzzdns.xml
+Strategy: Random
+. Test starting: Default
+
+. Record Iteration 1
+! Test error:
+Peach.Core.PeachException: The operation has timed out. ---> Peach.Core.SoftException: The operation has timed out. ---> Peach.Core.SoftException: The operation has timed out. ---> System.TimeoutException: The operation has timed out.
+  at Peach.Pro.Core.OS.Unix.DatagramImpl.Receive (System.Net.IPEndPoint expected, System.Byte[] buf, System.Int32& len, System.Int32 timeout) [0x00079] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/pro/Core/OS/Unix/DatagramImpl.cs:193 
+   --- End of inner exception stack trace ---
+  at Peach.Pro.Core.OS.Unix.DatagramImpl.Receive (System.Net.IPEndPoint expected, System.Byte[] buf, System.Int32& len, System.Int32 timeout) [0x001e8] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/pro/Core/OS/Unix/DatagramImpl.cs:241 
+  at Peach.Pro.Core.Publishers.DatagramPublisher.OnInput () [0x00002] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/pro/Core/Publishers/DatagramPublisher.cs:336 
+   --- End of inner exception stack trace ---
+  at Peach.Pro.Core.Publishers.DatagramPublisher.OnInput () [0x000cb] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/pro/Core/Publishers/DatagramPublisher.cs:352 
+  at Peach.Core.Publisher+<WrapFault>c__AnonStorey0.<>m__0 () [0x00000] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Publisher.cs:60 
+  at Peach.Core.Publisher.WrapFault[T] (System.Func`1[TResult] fn) [0x00000] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Publisher.cs:69 
+  at Peach.Core.Publisher.WrapFault (System.Action fn) [0x0000d] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Publisher.cs:58 
+  at Peach.Core.Publisher.input () [0x00010] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Publisher.cs:529 
+  at (wrapper remoting-invoke-with-check) Peach.Core.Publisher:input ()
+  at Peach.Core.Dom.Actions.Input.OnRun (Peach.Core.Publisher pub, Peach.Core.RunContext context) [0x00013] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Dom/Actions/Input.cs:46 
+  at Peach.Core.Dom.Action.Run (Peach.Core.RunContext context) [0x003c3] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Dom/Action.cs:373 
+   --- End of inner exception stack trace ---
+  at Peach.Core.Engine.RunTest () [0x00562] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Engine.cs:590 
+  at Peach.Core.Engine.startFuzzing (Peach.Core.Dom.Dom dom, Peach.Core.Dom.Test test, Peach.Core.RunConfiguration config) [0x000bf] in /home/zhaokai/workspace/peach/protocol-fuzzer-ce/core/Core/Engine.cs:257 
+. Test finished: Default

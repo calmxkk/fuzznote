@@ -1,0 +1,68 @@
+Peach Fuzzing Run
+=================
+
+Date of run: 2022/11/8 11:34:41
+Peach Version: 0.0.0.1
+Seed: 51376
+Command line: ftp.xml
+Pit File: ftp.xml
+Strategy: Random
+. Test starting: Default
+
+. Record Iteration 1
+.  Iteration 1 : 2022/11/8 11:34:44
+.  Iteration 100 : 2022/11/8 11:38:28
+.  Iteration 200 : 2022/11/8 11:41:46
+.  Iteration 300 : 2022/11/8 11:45:26
+.  Iteration 400 : 2022/11/8 11:48:34
+.  Iteration 500 : 2022/11/8 11:52:03
+.  Iteration 600 : 2022/11/8 11:57:11
+.  Iteration 700 : 2022/11/8 12:02:03
+.  Iteration 800 : 2022/11/8 12:07:14
+! Fault detected at iteration 887, trying to reproduce : 2022/11/8 12:12:10
+! Non-reproducible fault detected at iteration 887 : 2022/11/8 12:18:15
+.  Iteration 900 : 2022/11/8 12:18:42
+.  Iteration 1000 : 2022/11/8 12:22:01
+.  Iteration 1100 : 2022/11/8 12:25:16
+.  Iteration 1200 : 2022/11/8 12:28:30
+.  Iteration 1300 : 2022/11/8 12:32:17
+.  Iteration 1400 : 2022/11/8 12:35:37
+.  Iteration 1500 : 2022/11/8 12:39:20
+.  Iteration 1600 : 2022/11/8 12:42:48
+.  Iteration 1700 : 2022/11/8 12:45:57
+.  Iteration 1800 : 2022/11/8 12:49:02
+.  Iteration 1900 : 2022/11/8 12:52:55
+.  Iteration 2000 : 2022/11/8 12:56:18
+.  Iteration 2100 : 2022/11/8 12:59:42
+.  Iteration 2200 : 2022/11/8 13:03:30
+.  Iteration 2300 : 2022/11/8 13:07:07
+.  Iteration 2400 : 2022/11/8 13:10:12
+.  Iteration 2500 : 2022/11/8 13:13:38
+! Fault detected at iteration 2578, trying to reproduce : 2022/11/8 13:46:44
+! Non-reproducible fault detected at iteration 2578 : 2022/11/8 13:53:01
+.  Iteration 2600 : 2022/11/8 13:53:55
+.  Iteration 2700 : 2022/11/8 13:56:52
+.  Iteration 2800 : 2022/11/8 14:00:26
+.  Iteration 2900 : 2022/11/8 14:04:11
+.  Iteration 3000 : 2022/11/8 14:07:08
+.  Iteration 3100 : 2022/11/8 14:11:02
+.  Iteration 3200 : 2022/11/8 14:14:12
+.  Iteration 3300 : 2022/11/8 14:17:47
+.  Iteration 3400 : 2022/11/8 14:21:24
+.  Iteration 3500 : 2022/11/8 14:24:43
+.  Iteration 3600 : 2022/11/8 14:28:25
+.  Iteration 3700 : 2022/11/8 14:31:41
+.  Iteration 3800 : 2022/11/8 14:34:59
+.  Iteration 3900 : 2022/11/8 14:38:11
+.  Iteration 4000 : 2022/11/8 14:41:19
+.  Iteration 4100 : 2022/11/8 14:44:37
+.  Iteration 4200 : 2022/11/8 14:47:59
+.  Iteration 4300 : 2022/11/8 14:51:31
+.  Iteration 4400 : 2022/11/8 14:54:49
+.  Iteration 4500 : 2022/11/8 14:58:04
+.  Iteration 4600 : 2022/11/8 15:01:41
+.  Iteration 4700 : 2022/11/8 15:05:31
+.  Iteration 4800 : 2022/11/8 15:09:17
+.  Iteration 4900 : 2022/11/8 15:12:18
+.  Iteration 5000 : 2022/11/8 15:16:04
+.  Iteration 5100 : 2022/11/8 15:19:44

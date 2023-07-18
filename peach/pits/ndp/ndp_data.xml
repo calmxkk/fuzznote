@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach>
+    <DataModel name="options">
+        <Number name="type" size="8" value="1" signed="false" />
+        <Number name="size" size="8">
+            <Relation type="size" of="options" expressionSet="size/8" />
+        </Number>
+        <Block name="data">
+            <Blob valueType='hex' />
+        </Block>
+    </DataModel>
+
+
+    <DataModel name="ndpRS">
+        <Number name="type" size="8" value="133" signed="false" mutable="false" />
+        <Number name="code" size="8" value="0" signed="false" mutable="false" />
+        <Number name="checksum" size="16" signed="false">
+            <Fixup class="IcmpV6ChecksumFixup">
+                <Param name="ref" value="ndpRS" />
+                <Param name="src" value="fc00:17:1:1::1" />
+                <Param name="dst" value="fc00:17:1:1:0:242:ac11:2" />
+            </Fixup>
+        </Number>
+        <Number name="reserved" size="32" mutable="0" />
+        <Block name="RSoptions">
+            <Block ref="options" occurs="1">
+                <Block name="data">
+                    <Blob valueType='hex' value='024244280a31' mutable="false" />
+                </Block>
+            </Block>
+        </Block>
+    </DataModel>
+
+    <DataModel name="ndpNS">
+        <Number name="type" size="8" value="135" signed="false" mutable="false" />
+        <Number name="code" size="8" value="0" signed="false" mutable="false" />
+        <Number name="checksum" size="16" signed="false">
+            <Fixup class="IcmpV6ChecksumFixup">
+                <Param name="ref" value="ndpNS" />
+                <Param name="src" value="fc00:17:1:1::1" />
+                <Param name="dst" value="fc00:17:1:1:0:242:ac11:2" />
+            </Fixup>
+        </Number>
+        <Number name="reserved" size="32" mutable="0" />
+        <Block name='targetAddress'>
+            <Transformer class='Ipv6StringToOctet' />
+            <Blob name='Data' value="fc00:17:1:1:0:242:ac11:2" />
+        </Block>
+        <Block name="RSoptions">
+            <Block ref="options" occurs=" 1">
+                <Block name="data">
+                    <Blob valueType='hex' value='024244280a31' mutable="false" />
+                </Block>
+            </Block>
+        </Block>
+    </DataModel>
+</Peach>

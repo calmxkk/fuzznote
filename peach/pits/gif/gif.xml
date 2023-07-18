@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+    <DataModel name="GIFHeader" minOccurs="1" maxOccurs="1">
+        <Blob name="strSignature" length="3" valueType="hex" value="474946" token="true" mutable="false" />
+        <Blob name="strVersion" lenght="3" />
+    </DataModel>
+
+    <DataModel name="LogicalScreenDescriptor">
+        <Number name="Width" size="16" endian="little" signed="false" />
+        <Number name="Height" size="16" endian="little" signed="false" />
+        <Flags name="PacketFields" size="8">
+            <Flag name="GlobalColorTableFlag" position="7" size="1" />
+            <Flag name="ColorResolution" position="4" size="3" />
+            <Flag name="SortFlag" position="3" size="1" />
+            <Flag name="SizeOfGlobalColorTable" position="0" size="3" />
+        </Flags>
+        <Number name="BackgroundColorIndex" size="8" endian="little" signed="false" />
+        <Number name="PixelAspectRatio" size="8" endian="little" signed="false" />
+
+        <Block name="GlobalColorTable" minOccurs="0" maxOccurs="1">
+            <Relation type="when" when="self.find('PackedFields.GlobalColorTableFlag').getInternalValue() == 1" />
+            <!--Block name = "RGB">
+                    <Blob name="Red" length="1"/>
+                    <Blob name="Green" length="1"/>
+                    <Blob name="Blue" length="1"/>
+            </Block-->
+            <Blob lengthType="calc" length="3*(2**(int(self.find('PackedFields.SizeOfGlobalColorTable').getInternalValue())+1))" />
+        </Block>
+    </DataModel>
+
+    <DataModel name="ImageDescriptor">
+        <Blob name="ImageSeperator" length="1" valueType="hex" value="2c" token="true" mutable="false" />
+        <Number name="ImageLeftPosition" size="16" endian="little" signed="false" />
+        <Number name="ImageTopPosition" size="16" endian="little" signed="false" />
+        <Number name="ImageWidth" size="16" endian="little" signed="false" />
+        <Number name="ImageHeight" size="16" endian="little" signed="false" />
+        <Flags name="PackedFields" size="8">
+            <Flag name="LocalColorTableFlag" position="7" size="1" />
+            <Flag name="InterlaceFlag" position="6" size="1" />
+            <Flag name="SortFlag" position="5" size="1" />
+            <Flag name="Reserved" position="3" size="2" />
+            <Flag name="SizeOfLocalColorTable" position="0" size="3" />
+        </Flags>
+        <Block name="LocalColorTable" minOccurs="0" maxOccurs="1">
+            <Relation type="when" when="self.find('PackedFields.LocalColorTableFlag').getInternalValue() == 1" />
+            <!--Block name = "RGB">
+                    <Blob name="Red" length="1"/>
+                    <Blob name="Green" length="1"/>
+                    <Blob name="Blue" length="1"/>
+                </Block-->
+            <Blob lengthType="calc" length="3*(2**(int(self.find('PackedFields.SizeOfLocalColorTable').getInternalValue())+1))" />
+        </Block>
+    </DataModel>
+
+    <DataModel name="DataSubBlocks">
+        <Choice maxOccurs="3000">
+            <Block name="DataSubBlock">
+                <Relation type="when" when="self.find('Size').getInternalValue != 0" />
+                <Number name="Size" size="8" endian="little" signed="false">
+                    <Relation type="size" of="Data" />
+                </Number>
+                <Blob name="Data" />
+            </Block>
+        </Choice>
+        <Blob name="BlockTerminator" length="1" valueType="hex" value="00" mutable="false" />
+    </DataModel>
+
+    <DataModel name="ImageData">
+        <Number name="LZWMinimumCodeSize" size="8" endian="little" signed="false" />
+        <Block ref="DataSubBlocks" />
+    </DataModel>
+
+    <DataModel name="GraphicControlExtension">
+        <Blob name="ExtensionIntroducer" length="1" valueType="hex" value="21" token="true" mutable="false" />
+        <Blob name="GraphicControlLabel" length="1" valueType="hex" value="f9" token="true" mutable="false" />
+        <Block name="GraphicControlSubBlock">
+            <Number name="BlockSize" size="8" endian="little" signed="false" />
+            <Flags name="PackedFields" size="8">
+                <Flag name="Reserved" position="5" size="3" />
+                <Flag name="DisposalMethod" position="2" size="3" />
+                <Flag name="UserInputFlag" position="1" size="1" />
+                <Flag name="TransparentColorFlag" position="0" size="1" />
+            </Flags>
+            <Number name="DelayTime" size="16" endian="little" signed="false" />
+            <Number name="TransparentColorIndex" size="8" endian="little" signed="false" />
+        </Block>
+        <Blob name="BlockTerminator" length="1" valueType="hex" value="00" mutable="false" />
+    </DataModel>
+
+    <DataModel name="PlainTextExtension">
+        <Blob name="ExtensionIntroducer" length="1" valueType="hex" value="21" token="true" mutable="false" />
+        <Blob name="PlainTextLabel" length="1" valueType="hex" value="01" token="true" mutable="false" />
+        <Block name="PlainTextSubBlock">
+            <Number name="BlockSize" size="8" endian="little" signed="false" />
+            <Number name="TextGridLeftPosition" size="16" endian="little" signed="false" />
+            <Number name="TextGridTopPosition" size="16" endian="little" signed="false" />
+            <Number name="TextGridWidth" size="16" endian="little" signed="false" />
+            <Number name="TextGridHeight" size="16" endian="little" signed="false" />
+            <Number name="CharacterCellWidth" size="8" endian="little" signed="false" />
+            <Number name="CharacterCellHeight" size="8" endian="little" signed="false" />
+            <Number name="TextForegroundColorIndex" size="8" endian="little" signed="false" />
+            <Number name="TextBackgroundColorIndex" size="8" endian="little" signed="false" />
+        </Block>
+        <Block ref="DataSubBlocks" />
+    </DataModel>
+
+    <DataModel name="CommentExtension">
+        <Blob name="ExtensionIntroducer" length="1" valueType="hex" value="21" token="true" mutable="false" />
+        <Blob name="CommentLabel" length="1" valueType="hex" value="fe" token="true" mutable="false" />
+        <Block ref="DataSubBlocks" />
+    </DataModel>
+
+    <DataModel name="ApplicationExtension">
+        <Blob name="ExtensionIntroducer" length="1" valueType="hex" value="21" token="true" mutable="false" />
+        <Blob name="ApplicationLabel" length="1" valueType="hex" value="ff" token="true" mutable="false" />
+        <Block name="ApplicationSubBlock">
+            <Number name="BlockSize" size="8" endian="little" signed="false" />
+            <Blob name="ApplicationIdentifier" length="8" />
+            <Blob name="ApplicationAuthenticationCode" length="3" />
+        </Block>
+        <Block ref="DataSubBlocks" />
+    </DataModel>
+
+    <DataModel name="UndefinedData">
+        <Blob name="ExtensionIntroducer" length="1" valueType="hex" value="21" token="true" mutable="false" />
+        <Blob name="Label" length="1" valueType="hex" value="f9" token="true" mutable="false" />
+        <Block ref="DataSubBlocks" />
+    </DataModel>
+
+    <DataModel name="Trailer" minOccurs="1" maxOccurs="1">
+        <Blob name="GIFTrailer" length="1" valueType="hex" value="3b" token="true" mutable="false" />
+    </DataModel>
+
+    <DataModel name="Data">
+        <Choice maxOccurs="3000">
+            <Block ref="ImageDescriptor" />
+            <Block ref="GraphicControlExtension" />
+            <Block ref="CommentExtension" />
+            <Block ref="PlainTextExtension" />
+            <Block ref="ApplicationExtension" />
+            <Block ref="UndefinedData" />
+        </Choice>
+    </DataModel>
+
+    <DataModel name="Gif">
+        <Block ref="GifHeader" />
+        <Block ref="LogicalScreenDescriptor" />
+        <Block ref="Data" />
+        <Block ref="Trailer" />
+    </DataModel>
+
+</Peach>

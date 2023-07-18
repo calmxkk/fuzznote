@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+    <Include ns="ftp" src="file:./ftp_state.xml" />
+
+    <Test name="Default" maxOutputSize="500">
+        <!-- <Agent ref="ftp:AgentRemote" /> -->
+
+        <!-- login command  -->
+
+        <StateModel ref="ftp:AStatePASS" />
+        <StateModel ref="ftp:AStateUSERPASS1" />
+        <StateModel ref="ftp:AStateUSERPASS2" />
+        <StateModel ref="ftp:AStateUSERPASS3" />
+        <StateModel ref="ftp:AStateACCT" />
+        <StateModel ref="ftp:AStateHELP" />
+        <StateModel ref="ftp:AStateQUIT" />
+
+        <!-- standrd commands  -->
+        <StateModel ref="ftp:StateACCT" />
+        <StateModel ref="ftp:StateHELP" />
+        <StateModel ref="ftp:StateCWD" />
+        <StateModel ref="ftp:StateCDUP" />
+        <StateModel ref="ftp:StateSMNT" />
+        <StateModel ref="ftp:StateREIN" />
+        <StateModel ref="ftp:StateQUIT" />
+        <StateModel ref="ftp:StatePORT" />
+        <StateModel ref="ftp:StatePASV" />
+        <StateModel ref="ftp:StateTYPE1" />
+        <StateModel ref="ftp:StateTYPE2" />
+        <StateModel ref="ftp:StateTYPE3" />
+        <StateModel ref="ftp:StateTYPE4" />
+        <StateModel ref="ftp:StateSTRU" />
+        <StateModel ref="ftp:StateMODE" />
+        <StateModel ref="ftp:StateRETR" />
+        <StateModel ref="ftp:StateSTOR" />
+        <StateModel ref="ftp:StateSTOU" />
+        <StateModel ref="ftp:StateAPPE" />
+        <StateModel ref="ftp:StateALLO" />
+        <StateModel ref="ftp:StateREST" />
+        <StateModel ref="ftp:StateRNFR" />
+        <StateModel ref="ftp:StateRNTO" />
+        <StateModel ref="ftp:StateABOR" />
+        <StateModel ref="ftp:StateDELE" />
+        <StateModel ref="ftp:StateRMD" />
+        <StateModel ref="ftp:StateMKD" />
+        <StateModel ref="ftp:StatePWD" />
+        <StateModel ref="ftp:StateLIST" />
+        <StateModel ref="ftp:StateNLST" />
+        <StateModel ref="ftp:StateSITE" />
+        <StateModel ref="ftp:StateSYST" />
+        <StateModel ref="ftp:StateSTAT" />
+        <StateModel ref="ftp:StateNOOP" />
+        <StateModel ref="ftp:StateHOST" />
+        <StateModel ref="ftp:StateAUTH" />
+        <StateModel ref="ftp:StateADAT" />
+        <StateModel ref="ftp:StatePROT" />
+        <StateModel ref="ftp:StatePBSZ" />
+        <StateModel ref="ftp:AStatePROT" />
+        <StateModel ref="ftp:AStatePBSZ" />
+        <StateModel ref="ftp:AStateAUTHADAT" />
+        <StateModel ref="ftp:StateCCC" />
+        <StateModel ref="ftp:StateMIC" />
+        <StateModel ref="ftp:StateCONF" />
+        <StateModel ref="ftp:StateENC" />
+        <StateModel ref="ftp:StateALGS" />
+        <StateModel ref="ftp:StateEPRT" />
+        <StateModel ref="ftp:StateEPSV" />
+        <StateModel ref="ftp:StateFEAT" />
+        <StateModel ref="ftp:StateOPTS" />
+        <StateModel ref="ftp:StateLANG" />
+        <StateModel ref="ftp:StateLPRT" />
+        <StateModel ref="ftp:StateLPSV" />
+        <StateModel ref="ftp:StateMDTM" />
+        <StateModel ref="ftp:StateMLST" />
+        <StateModel ref="ftp:StateMLSD" />
+        <StateModel ref="ftp:StateSIZE" />
+        <StateModel ref="ftp:StateXRMD" />
+        <StateModel ref="ftp:StateXMKD" />
+        <StateModel ref="ftp:StateXPWD" />
+        <StateModel ref="ftp:StateXCWD" />
+        <StateModel ref="ftp:StateXCUP" />
+
+        <!-- special command  -->
+        <StateModel ref="ftp:StatePASVAPPE" />
+        <StateModel ref="ftp:StatePASVSTOR" />
+        <StateModel ref="ftp:StatePASVRETR" />
+        <StateModel ref="ftp:StatePASVSTOU" />
+        <StateModel ref="ftp:StatePASVLIST" />
+        <StateModel ref="ftp:StatePASVNLST" />
+        <StateModel ref="ftp:StatePORTAPPE" />
+        <StateModel ref="ftp:StatePORTSTOR" />
+        <StateModel ref="ftp:StatePORTRETR" />
+        <StateModel ref="ftp:StatePORTSTOU" />
+        <StateModel ref="ftp:StatePORTLIST" />
+        <StateModel ref="ftp:StatePORTNLST" />
+        <StateModel ref="ftp:StateRESTAPPE" />
+        <StateModel ref="ftp:StateRESTSTOR" />
+        <StateModel ref="ftp:StateRESTRETR" />
+        <StateModel ref="ftp:StateRNFRRNTO" />
+
+        <StateModel ref="ftp:AStateUSER" />
+        <StateModel ref="ftp:AStateUSERPASS1" />
+
+
+        <Publisher class="Tcp">
+            <Param name="Host" value="##HOST##" />
+            <Param name="Port" value="##PORT##" />
+        </Publisher>
+        <!-- <Exclude ref="ftp:DDataUSER" />
+        <Exclude ref="ftp:DDataPASS" />
+        <Exclude ref="ftp:DDataQUIT" />
+        <Exclude ref="ftp:DataPASV" /> -->
+
+        <Logger class="File">
+            <Param name="Path" value="FTP-Logs" />
+        </Logger>
+    </Test>
+</Peach>

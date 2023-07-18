@@ -1,0 +1,229 @@
+2023-05-23 01:52:04.8349 Peach.Pro.Core.Loggers.JobLogger Writing debug.log to: /root/workspace/pits/dns/Logs/fuzzdns.xml_20230523015202/debug.log 
+2023-05-23 01:52:05.4139 Peach.Core.Engine runTest: Iteration Starting: 1,  ============================= 
+2023-05-23 01:52:05.4363 Peach.Core.Engine runTest: Performing control recording iteration. 
+2023-05-23 01:52:05.5201 Peach.Core.Dom.StateModel Run(): Changing to state "State1". 
+2023-05-23 01:52:05.5250 Peach.Core.Dom.Action Run(sendQueryData): Output 
+2023-05-23 01:52:05.6706 Peach.Pro.Core.Publishers.UdpPublisher start() 
+2023-05-23 01:52:05.6823 Peach.Pro.Core.Publishers.UdpPublisher open() 
+2023-05-23 01:52:05.6878 Peach.Pro.Core.Publishers.UdpPublisher output(28 bytes) 
+2023-05-23 01:52:05.6906 Peach.Pro.Core.Publishers.UdpPublisher 
+
+00000000   04 D2 01 00 00 01 00 00  00 00 00 00 06 67 6F 6F   .............goo
+00000010   67 6C 65 03 63 6F 6D 00  00 01 00 01               gle.com.....    
+ 
+2023-05-23 01:52:05.6939 Peach.Core.Dom.Action Run(sendResponse): Input 
+2023-05-23 01:52:05.6948 Peach.Pro.Core.Publishers.UdpPublisher input() 
+2023-05-23 01:52:05.6966 Peach.Pro.Core.Publishers.UdpPublisher 
+
+00000000   04 D2 81 80 00 01 00 01  00 00 00 00 06 67 6F 6F   .............goo
+00000010   67 6C 65 03 63 6F 6D 00  00 01 00 01 C0 0C 00 01   gle.com.........
+00000020   00 01 00 00 00 67 00 04  AC D9 A3 2E               .....g......    
+ 
+2023-05-23 01:52:05.7052 DataCracker -+ DataModel 'sendResponseData', Bytes: 0/44, Bits: 0/352 
+2023-05-23 01:52:05.7089 DataCracker  | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7104 DataCracker  |-- Number 'ID', Bytes: 0/44, Bits: 0/352 
+2023-05-23 01:52:05.7104 DataCracker  |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7126 DataCracker  |   Value: 1234 (0x4D2) 
+2023-05-23 01:52:05.7135 DataCracker  |-- Number 'QR', Bytes: 2/44, Bits: 16/352 
+2023-05-23 01:52:05.7135 DataCracker  |   Size: 0 bytes | 1 bits (Has Length) 
+2023-05-23 01:52:05.7135 DataCracker  |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7135 DataCracker  |-- Number 'Opcode', Bytes: 2/44, Bits: 17/352 
+2023-05-23 01:52:05.7135 DataCracker  |   Size: 0 bytes | 4 bits (Has Length) 
+2023-05-23 01:52:05.7135 DataCracker  |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7135 DataCracker  |-- Number 'AA', Bytes: 2/44, Bits: 21/352 
+2023-05-23 01:52:05.7135 DataCracker  |   Size: 0 bytes | 1 bits (Has Length) 
+2023-05-23 01:52:05.7135 DataCracker  |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7135 DataCracker  |-- Number 'TC', Bytes: 2/44, Bits: 22/352 
+2023-05-23 01:52:05.7135 DataCracker  |   Size: 0 bytes | 1 bits (Has Length) 
+2023-05-23 01:52:05.7135 DataCracker  |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7135 DataCracker  |-- Number 'RD', Bytes: 2/44, Bits: 23/352 
+2023-05-23 01:52:05.7135 DataCracker  |   Size: 0 bytes | 1 bits (Has Length) 
+2023-05-23 01:52:05.7144 DataCracker  |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7144 DataCracker  |-- Number 'RA', Bytes: 3/44, Bits: 24/352 
+2023-05-23 01:52:05.7144 DataCracker  |   Size: 0 bytes | 1 bits (Has Length) 
+2023-05-23 01:52:05.7144 DataCracker  |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7144 DataCracker  |-- Number 'Z', Bytes: 3/44, Bits: 25/352 
+2023-05-23 01:52:05.7144 DataCracker  |   Size: 0 bytes | 3 bits (Has Length) 
+2023-05-23 01:52:05.7144 DataCracker  |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7144 DataCracker  |-- Number 'RCODE', Bytes: 3/44, Bits: 28/352 
+2023-05-23 01:52:05.7144 DataCracker  |   Size: 0 bytes | 4 bits (Has Length) 
+2023-05-23 01:52:05.7144 DataCracker  |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7144 DataCracker  |-- Number 'QDCOUNT', Bytes: 4/44, Bits: 32/352 
+2023-05-23 01:52:05.7144 DataCracker  |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7144 DataCracker  |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7144 DataCracker  |-- Number 'ANCOUNT', Bytes: 6/44, Bits: 48/352 
+2023-05-23 01:52:05.7144 DataCracker  |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7144 DataCracker  |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7144 DataCracker  |-- Number 'NSCOUNT', Bytes: 8/44, Bits: 64/352 
+2023-05-23 01:52:05.7144 DataCracker  |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7154 DataCracker  |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7154 DataCracker  |-- Number 'ARCOUNT', Bytes: 10/44, Bits: 80/352 
+2023-05-23 01:52:05.7154 DataCracker  |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7154 DataCracker  |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7154 DataCracker  |-+ Array 'Query', Bytes: 12/44, Bits: 96/352 
+2023-05-23 01:52:05.7165 DataCracker  | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7195 DataCracker  | | Occurs: 1 (Count Relation) 
+2023-05-23 01:52:05.7195 DataCracker  | |-+ DataModel 'Query_0', Bytes: 12/44, Bits: 96/352 
+2023-05-23 01:52:05.7195 DataCracker  | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7195 DataCracker  | | |-+ Choice 'DataElement_2', Bytes: 12/44, Bits: 96/352 
+2023-05-23 01:52:05.7195 DataCracker  | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7214 DataCracker  | | | |-+ DataModel 'DataElement_3', Bytes: 12/44, Bits: 96/352 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7214 DataCracker  | | | | |-+ Array 'DataElement_0', Bytes: 12/44, Bits: 96/352 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | Occurs: 1 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | |-+ DataModel 'DataElement_0_0', Bytes: 12/44, Bits: 96/352 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | |-- Number 'flag', Bytes: 12/44, Bits: 96/352 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | |   Size: 0 bytes | 2 bits (Has Length) 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | |-- Number 'size', Bytes: 12/44, Bits: 98/352 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | |   Size: 0 bytes | 6 bits (Has Length) 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | |   Value: 6 (0x6) 
+2023-05-23 01:52:05.7214 DataCracker  | | | | | | |-- String 'id', Bytes: 13/44, Bits: 104/352 
+2023-05-23 01:52:05.7229 DataCracker  | | | | | | |   Size: 6 bytes | 48 bits (Has Length) 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |   Value: google 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | / 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | / 
+2023-05-23 01:52:05.7244 DataCracker  | | | | |-+ Array 'DataElement_1', Bytes: 19/44, Bits: 152/352 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | Occurs: 1 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | |-+ DataModel 'DataElement_1_0', Bytes: 19/44, Bits: 152/352 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |-- Number 'flag', Bytes: 19/44, Bits: 152/352 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |   Size: 0 bytes | 2 bits (Has Length) 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |-- Number 'size', Bytes: 19/44, Bits: 154/352 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |   Size: 0 bytes | 6 bits (Has Length) 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |   Value: 3 (0x3) 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |-- String 'id', Bytes: 20/44, Bits: 160/352 
+2023-05-23 01:52:05.7244 DataCracker  | | | | | | |   Size: 3 bytes | 24 bits (Has Length) 
+2023-05-23 01:52:05.7254 DataCracker  | | | | | | |   Value: com 
+2023-05-23 01:52:05.7254 DataCracker  | | | | | | / 
+2023-05-23 01:52:05.7254 DataCracker  | | | | | / 
+2023-05-23 01:52:05.7254 DataCracker  | | | | |-- Blob 'NULL', Bytes: 23/44, Bits: 184/352 
+2023-05-23 01:52:05.7254 DataCracker  | | | | |   Size: 1 bytes | 8 bits (Has Length) 
+2023-05-23 01:52:05.7254 DataCracker  | | | | |   Value: 00 
+2023-05-23 01:52:05.7254 DataCracker  | | | | / 
+2023-05-23 01:52:05.7264 DataCracker  | | | / 
+2023-05-23 01:52:05.7264 DataCracker  | | |-- Number 'QTYPE', Bytes: 24/44, Bits: 192/352 
+2023-05-23 01:52:05.7264 DataCracker  | | |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7264 DataCracker  | | |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7264 DataCracker  | | |-- Number 'QCLASS', Bytes: 26/44, Bits: 208/352 
+2023-05-23 01:52:05.7264 DataCracker  | | |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7264 DataCracker  | | |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7264 DataCracker  | | / 
+2023-05-23 01:52:05.7264 DataCracker  | / 
+2023-05-23 01:52:05.7264 DataCracker  |-+ Array 'Response', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7264 DataCracker  | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7275 DataCracker  | | Min: 10, Max: 1000 
+2023-05-23 01:52:05.7275 DataCracker  | |-+ DataModel 'Response_0', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7275 DataCracker  | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7275 DataCracker  | | |-+ DataModel 'query', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7275 DataCracker  | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7275 DataCracker  | | | |-+ Choice 'DataElement_2', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7275 DataCracker  | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7285 DataCracker  | | | | |-+ DataModel 'DataElement_3', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | |-+ Array 'DataElement_0', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | Occurs: 1 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | |-+ DataModel 'DataElement_0_0', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | |-- Number 'flag', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | |   Size: 0 bytes | 2 bits (Has Length) 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | |   Value: 3 (0x3) 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | |-- Number 'size', Bytes: 28/44, Bits: 226/352 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | |   Size: 0 bytes | 6 bits (Has Length) 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7285 DataCracker  | | | | | | | |-- String 'id', Bytes: 29/44, Bits: 232/352 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |   Size: 0 bytes | 0 bits (Has Length) 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |   Value:  
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | / 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | / 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | |-+ Array 'DataElement_1', Bytes: 29/44, Bits: 232/352 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | Occurs: 1 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | |-+ DataModel 'DataElement_1_0', Bytes: 29/44, Bits: 232/352 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |-- Number 'flag', Bytes: 29/44, Bits: 232/352 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |   Size: 0 bytes | 2 bits (Has Length) 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |-- Number 'size', Bytes: 29/44, Bits: 234/352 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |   Size: 0 bytes | 6 bits (Has Length) 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |   Value: 12 (0xC) 
+2023-05-23 01:52:05.7294 DataCracker  | | | | | | | |-- String 'id', Bytes: 30/44, Bits: 240/352 
+2023-05-23 01:52:05.7304 DataCracker  | | | | | | | |   Size: 12 bytes | 96 bits (Has Length) 
+2023-05-23 01:52:05.7322 DataCracker  | | | | | | | |   Failed: String contains invalid UTF8 bytes. 
+2023-05-23 01:52:05.7343 DataCracker  | | | | | | | X 
+2023-05-23 01:52:05.7343 DataCracker  | | | | | | X (Only cracked 0 of 1 array entries.) 
+2023-05-23 01:52:05.7343 DataCracker  | | | | | X 
+2023-05-23 01:52:05.7343 DataCracker  | | | | |-+ DataModel 'DataElement_4', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7343 DataCracker  | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7343 DataCracker  | | | | | |-+ Array 'DataElement_0', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7343 DataCracker  | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | Occurs: 1 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | |-+ DataModel 'DataElement_0_0', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |-- Number 'flag', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |   Size: 0 bytes | 2 bits (Has Length) 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |   Value: 3 (0x3) 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |-- Number 'size', Bytes: 28/44, Bits: 226/352 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |   Size: 0 bytes | 6 bits (Has Length) 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |-- String 'id', Bytes: 29/44, Bits: 232/352 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |   Size: 0 bytes | 0 bits (Has Length) 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | |   Value:  
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | / 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | / 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | |-+ Array 'DataElement_1', Bytes: 29/44, Bits: 232/352 
+2023-05-23 01:52:05.7354 DataCracker  | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | Occurs: 1 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | |-+ DataModel 'DataElement_1_0', Bytes: 29/44, Bits: 232/352 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |-- Number 'flag', Bytes: 29/44, Bits: 232/352 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |   Size: 0 bytes | 2 bits (Has Length) 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |   Value: 0 (0x0) 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |-- Number 'size', Bytes: 29/44, Bits: 234/352 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |   Size: 0 bytes | 6 bits (Has Length) 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |   Value: 12 (0xC) 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |-- String 'id', Bytes: 30/44, Bits: 240/352 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |   Size: 12 bytes | 96 bits (Has Length) 
+2023-05-23 01:52:05.7364 DataCracker  | | | | | | | |   Failed: String contains invalid UTF8 bytes. 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | | | X 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | | X (Only cracked 0 of 1 array entries.) 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | X 
+2023-05-23 01:52:05.7373 DataCracker  | | | | |-+ Block 'DataElement_6', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | | Size: ??? (Deterministic) 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | |-- Number 'flag', Bytes: 28/44, Bits: 224/352 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | |   Size: 0 bytes | 2 bits (Has Length) 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | |   Value: 3 (0x3) 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | |-- Number 'DataElement_7', Bytes: 28/44, Bits: 226/352 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | |   Size: 1 bytes | 14 bits (Has Length) 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | |   Value: 12 (0xC) 
+2023-05-23 01:52:05.7373 DataCracker  | | | | | / 
+2023-05-23 01:52:05.7373 DataCracker  | | | | / 
+2023-05-23 01:52:05.7373 DataCracker  | | | / 
+2023-05-23 01:52:05.7373 DataCracker  | | |-- Number 'QTYPE', Bytes: 30/44, Bits: 240/352 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7384 DataCracker  | | |-- Number 'QCLASS', Bytes: 32/44, Bits: 256/352 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Size: 2 bytes | 16 bits (Has Length) 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Value: 1 (0x1) 
+2023-05-23 01:52:05.7384 DataCracker  | | |-- Number 'TTL', Bytes: 34/44, Bits: 272/352 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Size: 4 bytes | 32 bits (Has Length) 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Value: 103 (0x67) 
+2023-05-23 01:52:05.7384 DataCracker  | | |-- Number 'ipaddressLen', Bytes: 38/44, Bits: 304/352 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Size: 4 bytes | 32 bits (Has Length) 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Value: 306393 (0x4ACD9) 
+2023-05-23 01:52:05.7384 DataCracker  | | |-- Blob 'ipAddress', Bytes: 42/44, Bits: 336/352 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Size: 306393 bytes | 2451144 bits (Has Length) 
+2023-05-23 01:52:05.7384 DataCracker  | | |   Failed: Length is 2451144 bits but buffer only has 16 bits left. 
+2023-05-23 01:52:05.7394 DataCracker  | | X 
+2023-05-23 01:52:05.7394 DataCracker  | X (Only cracked 0 of 10 array entries.) 
+2023-05-23 01:52:05.7394 DataCracker  X 
+2023-05-23 01:52:05.7407 Peach.Pro.Core.Publishers.UdpPublisher close() 
+2023-05-23 01:52:05.7407 Peach.Core.Engine runTest: SoftException on control recording iteration 
+2023-05-23 01:52:05.7468 Peach.Core.Engine Stopping engine due to PeachException. 
+2023-05-23 01:52:05.7498 Peach.Pro.Core.Publishers.UdpPublisher stop() 
+2023-05-23 01:52:05.7498 Peach.Core.Engine EndTest: Stopping all agents and monitors 

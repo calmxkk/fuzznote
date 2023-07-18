@@ -1,0 +1,2837 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+    <Include ns="ftp" src="file:./ftp_data.xml" />
+
+    <!--                                                      -->
+    <!-- Commands you can execute before being authenticated. -->
+    <!--                                                      -->
+
+    <!-- USER: Try to authenticate with the malformed USER command. -->
+    <StateModel name="AStateUSER" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <!-- Read welcome message. -->
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+
+            <!-- Send USER command to ftp server. -->
+            <Action type="output">
+                <DataModel ref="ftp:DataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+
+            <!-- Send QUIT command. -->
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <!-- 
+    PASS: Try to authenticate with the malformed PASS command. This should
+    return the following output, but we're trying to fuzz it anyway:
+
+    > 503 Bad sequence of commands. Send USER first
+  -->
+    <StateModel name="AStatePASS" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <!-- 
+     Three combinations of USER/PASS commands where we'll fuzz the 
+     authentication login mechanism. The three options are:
+
+     USER <fuzz>\r\n
+     PASS anon\r\n
+
+     USER anon\r\n
+     PASS <fuzz>\r\n
+
+     USER <fuzz>\r\n
+     PASS <fuzz>\r\n
+  -->
+    <StateModel name="AStateUSERPASS1" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+    <StateModel name="AStateUSERPASS2" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+    <StateModel name="AStateUSERPASS3" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <!-- 
+    ACCT: The ACCT command is sometimes available without being authenticated. 
+  -->
+    <StateModel name="AStateACCT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataACCT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <!-- 
+    HELP: The HELP command is sometimes available without being authenticated. 
+  -->
+    <StateModel name="AStateHELP" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataHELP" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <!-- 
+    QUIT: The QUIT command is sometimes available without being authenticated. 
+  -->
+    <StateModel name="AStateQUIT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataQUIT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <!--                        -->
+    <!-- Special PASV commands. -->
+    <!--                        -->
+    <StateModel name="StatePASVAPPE" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataAPPE" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePASVSTOR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTOR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePASVRETR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataRETR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePASVSTOU" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTOU" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePASVLIST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataLIST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePASVNLST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataNLST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <!--                        -->
+    <!-- Special PORT commands. -->
+    <!--                        -->
+    <StateModel name="StatePORTAPPE" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPORT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataAPPE" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePORTSTOR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPORT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTOR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePORTRETR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPORT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataRETR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePORTSTOU" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPORT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTOU" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePORTLIST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPORT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataLIST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePORTNLST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPORT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataNLST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <!--                        -->
+    <!-- Special REST commands. -->
+    <!--                        -->
+    <StateModel name="StateRESTAPPE" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataREST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataAPPE" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateRESTSTOR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataREST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTOR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateRESTRETR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataREST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataRETR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <!--                       -->
+    <!-- Special RNFR command. -->
+    <!--                       -->
+    <StateModel name="StateRNFRRNTO" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataMKD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataRNFR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataRNTO" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <!--                                              -->
+    <!-- Commands where you need to be authenticated. -->
+    <!--                                              -->
+    <StateModel name="StateHELP" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <!-- Read welcome message. -->
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+
+            <!-- Send USER command to ftp server. -->
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+
+            <!-- Send PASS command to ftp server. -->
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+
+            <!-- Send HELP command. -->
+            <Action type="output">
+                <DataModel ref="ftp:DataHELP" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+
+            <!-- Send QUIT command. -->
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateACCT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataACCT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateCWD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataCWD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateCDUP" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataCDUP" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateSMNT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSMNT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateREIN" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataREIN" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateQUIT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataQUIT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePORT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPORT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePORT2" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action name="aaa" type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="changeState" ref="ftp:InitialPASS" when="State['aaa']['DataResponse']['response'].getInternalValue().startswith('331')"></Action>
+            <Action type="close" />
+        </State>
+        <State name="InitialPASS">
+            <Action type="connect" />
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action name="bbb" type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="changeState" ref="ftp:InitialCOMM" when="State['bbb']['DataResponse']['response'].getInternalValue().startswith('230')"></Action>
+            <Action type="close" />
+        </State>
+        <State name="InitialCOMM">
+            <Action type="connect" />
+            <Action type="output">
+                <DataModel ref="ftp:DataPORT" />
+            </Action>
+            <Action name="ccc" type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="changeState" ref="ftp:InitialCOMM" when="State['ccc']['DataResponse']['response'].getInternalValue()[0:3] == '200'"></Action>
+            <Action type="close" />
+        </State>
+        <State name="InitialQUIT">
+            <Action type="connect" />
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePASV" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPASV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateTYPE1" initialState="StateTYPE1">
+        <State name="StateTYPE1">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataTYPE1" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+    <StateModel name="StateTYPE2" initialState="StateTYPE2">
+        <State name="StateTYPE2">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataTYPE2" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+    <StateModel name="StateTYPE3" initialState="StateTYPE3">
+        <State name="StateTYPE3">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataTYPE3" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+    <StateModel name="StateTYPE4" initialState="StateTYPE4">
+        <State name="StateTYPE4">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataTYPE4" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateSTRU" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTRU" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateMODE" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataMODE" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateRETR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataRETR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateSTOR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTOR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateSTOU" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTOU" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateAPPE" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataAPPE" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateALLO" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataALLO" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateREST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataREST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateRNFR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataRNFR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateRNTO" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataRNTO" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateABOR" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataABOR" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateDELE" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataDELE" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateRMD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataRMD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateMKD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataMKD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePWD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPWD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateLIST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataLIST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateNLST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataNLST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateSITE" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSITE" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateSYST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSYST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateSTAT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSTAT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <!-- <StateModel name="StateHELP" initialState="Initial">
+    <State name="Initial">
+      <Action type="connect" />
+      <Action type="input">
+        <DataModel ref="ftp:DataResponse" />
+      </Action>
+      <Action type="output">
+        <DataModel ref="ftp:DDataUSER" />
+      </Action>
+      <Action type="input">
+        <DataModel ref="ftp:DataResponse" />
+      </Action>
+      <Action type="output">
+        <DataModel ref="ftp:DDataPASS" />
+      </Action>
+      <Action type="input">
+        <DataModel ref="ftp:DataResponse" />
+      </Action>
+      <Action type="output">
+        <DataModel ref="ftp:DataHELP" />
+      </Action>
+      <Action type="input">
+        <DataModel ref="ftp:DataResponse" />
+      </Action>
+      <Action type="output">
+        <DataModel ref="ftp:DDataQUIT" />
+      </Action>
+      <Action type="close" />
+    </State>
+  </StateModel> -->
+
+    <StateModel name="StateNOOP" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataNOOP" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <StateModel name="StateHOST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataHOST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <!--                                             -->
+    <!--            Extended Commands                -->
+    <!--                                             -->
+    <StateModel name="StateAUTH" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataAUTH" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <StateModel name="StateADAT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataADAT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePROT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPROT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StatePBSZ" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPBSZ" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="AStatePROT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPROT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="AStatePBSZ" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataPBSZ" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="AStateAUTHADAT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataAUTH" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataADAT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateCCC" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataCCC" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateMIC" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataMIC" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateCONF" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataCONF" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateENC" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataENC" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateALGS" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataALGS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateEPRT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataEPRT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateEPSV" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataEPSV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateFEAT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataFEAT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateOPTS" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataOPTS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateLANG" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataLANG" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateLPRT" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataLPRT" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateLPSV" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataLPSV" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateMDTM" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataMDTM" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateMLST" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataMLST" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateMLSD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataMLSD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateSIZE" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataSIZE" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateXRMD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataXRMD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateXMKD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataXMKD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateXPWD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataXPWD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateXCWD" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataXCWD" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+    <StateModel name="StateXCUP" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataPASS" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DataXCUP" />
+            </Action>
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataQUIT" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+    <!-- 
+    Check for the supported commands on the FTP server.
+  -->
+    <StateModel name="CheckFTPCommands" initialState="Initial">
+        <State name="Initial">
+            <Action type="connect" />
+            <Action type="input">
+                <DataModel ref="ftp:DataResponse" />
+            </Action>
+            <Action type="output">
+                <DataModel ref="ftp:DDataUSER" />
+            </Action>
+            <Action type="close" />
+        </State>
+    </StateModel>
+
+
+</Peach>

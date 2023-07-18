@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+    <DataModel name="headerModel">
+        <String name="Header" />
+        <String value=": " />
+        <String name="Value" />
+        <String value="\r\n" />
+    </DataModel>
+
+    <DataModel name="httpRequest">
+        <Block name="requestLine">
+            <String name="Method" />
+            <String value=" " />
+            <String name="RequestUri" />
+            <String value=" " />
+            <String name="HttpVersion" />
+            <String value="\r\n" />
+        </Block>
+
+        <Block name="headerHost" ref="headerModel">
+            <String name="Header" value="Host" />
+        </Block>
+
+        <Block name="headerContentLength" ref="headerModel">
+            <String name="Header" value="Content-Length" />
+            <String name="Value">
+                <Relation type="size" of="httpBody.content" />
+            </String>
+        </Block>
+
+        <Block name="httpBody">
+            <String name="content" value="length is 12" />
+        </Block>
+    </DataModel>
+
+    <Data name="httpGet">
+        <Field name="RequestLine.Method" value="GET" />
+        <Field name="RequestLine.RequestUri" value="http://192.168.5.130" />
+        <Field name="RequestLine.HttpVersion" value="HTTP/1.1" />
+        <Field name="HeaderHost.Value" value="http://192.168.5.130" />
+        <Field name="httpBody.content" value="\r\nfuzz" />
+    </Data>
+
+    <Data name="httpOptions" ref="httpGet">
+        <Field name="RequestLine.Method" value="OPTIONS" />
+        <Field name="RequestLine.RequestUri" value="*" />
+        <Field name="HeaderHost.Value" value="" />
+    </Data>
+
+</Peach>

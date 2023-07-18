@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach>
+
+    <Include ns="dns" src="file:./dns_data.xml" />
+
+    <!-- 定义状态模型 initialState表示初始状态 -->
+    <StateModel name="State" initialState="State1">
+        <!-- 定义状态 -->
+        <State name="State1">
+            <!-- 具体动作，output表示外发数据 -->
+            <Action name="sendQueryData" type="output">
+                <DataModel name="receiveQuery" ref="dns:DNSquery" />
+            </Action>
+
+            <!-- <Action type='slurp' valueXpath='//receiveQuery//ID' setXpath='//sendResponseData//ID' /> -->
+
+            <!-- <Action name="sendResponse" type="input">
+                <DataModel name="sendResponseData" ref="dns:DNSresponse" />
+            </Action> -->
+        </State>
+    </StateModel>
+
+</Peach>

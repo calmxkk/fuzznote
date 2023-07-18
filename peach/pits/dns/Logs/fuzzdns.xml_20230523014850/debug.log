@@ -1,0 +1,15 @@
+2023-05-23 01:48:52.6032 Peach.Pro.Core.Loggers.JobLogger Writing debug.log to: /root/workspace/pits/dns/Logs/fuzzdns.xml_20230523014850/debug.log 
+2023-05-23 01:48:52.7926 Peach.Core.Engine runTest: Iteration Starting: 1,  ============================= 
+2023-05-23 01:48:52.8945 Peach.Core.Engine runTest: Performing control recording iteration. 
+2023-05-23 01:48:52.9712 Peach.Core.Dom.StateModel Run(): Changing to state "State1". 
+2023-05-23 01:48:52.9760 Peach.Core.Dom.Action Run(sendQueryData): Input 
+2023-05-23 01:48:52.9789 Peach.Pro.Core.Publishers.UdpPublisher start() 
+2023-05-23 01:48:52.9897 Peach.Pro.Core.Publishers.UdpPublisher open() 
+2023-05-23 01:48:52.9942 Peach.Pro.Core.Publishers.UdpPublisher input() 
+2023-05-23 01:48:56.0001 Peach.Pro.Core.OS.Unix.DatagramImpl Packet not received from eth0 in 3000ms, timing out. 
+2023-05-23 01:48:56.0004 Peach.Pro.Core.Publishers.UdpPublisher Unable to receive Udp packet from 172.17.0.5:53. The operation has timed out. 
+2023-05-23 01:48:56.0019 Peach.Pro.Core.Publishers.UdpPublisher close() 
+2023-05-23 01:48:56.0019 Peach.Core.Engine runTest: SoftException on control recording iteration 
+2023-05-23 01:48:56.0057 Peach.Core.Engine Stopping engine due to PeachException. 
+2023-05-23 01:48:56.0084 Peach.Pro.Core.Publishers.UdpPublisher stop() 
+2023-05-23 01:48:56.0084 Peach.Core.Engine EndTest: Stopping all agents and monitors 

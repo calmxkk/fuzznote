@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+    <Include ns="ftp" src="file:./noResponce_ftp_state.xml" />
+
+    <Test name="Default">
+        <!-- <Agent ref="ftp:AgentRemote" /> -->
+
+        <StateModel ref="ftp:StatePORT" />
+
+        <Publisher class="Tcp">
+            <Param name="Host" value="##HOST##" />
+            <Param name="Port" value="##PORT##" />
+        </Publisher>
+        <!-- <Exclude ref="ftp:DDataUSER" />
+        <Exclude ref="ftp:DDataPASS" />
+        <Exclude ref="ftp:DDataQUIT" />
+        <Exclude ref="ftp:DataPASV" /> -->
+
+        <Logger class="File">
+            <Param name="Path" value="##LOGPATH##" />
+        </Logger>
+    </Test>
+</Peach>

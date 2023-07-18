@@ -1,0 +1,13 @@
+{
+  "States": [
+    {
+      "name": "Initial",
+      "actions": [
+        {
+          "name": "Action",
+          "type": "Connect"
+        }
+      ]
+    }
+  ]
+}

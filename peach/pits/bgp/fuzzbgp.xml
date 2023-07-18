@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach>
+
+    <Include ns="bgp" src="file:./bgp_state.xml" />
+
+    <Defaults>
+        <Number endian="big" />
+    </Defaults>
+
+    <!-- Monitor -->
+    <Agent name="TheAgent">
+        <Monitor class="RunCommand">
+            <Param name="Command" value="python" />
+            <Param name="Arguments" value="./monitor.py" />
+            <Param name="FaultOnNonZeroExit" value="true" />
+            <Param name="When" value="OnIterationEnd" />
+        </Monitor>
+    </Agent>
+
+    <!-- 设置maxOutputSize以防止产生过大数据包 -->
+    <Test name="Default" maxOutputSize="580">
+        <!-- 变异策略 -->
+        <Strategy class="Random">
+            <Param name="MaxFieldsToMutate" value="6" />
+            <Param name="SwitchCount" value="200" />
+        </Strategy>
+
+        <!-- 指定要使用的状态模型 -->
+        <StateModel ref="bgp:State" />
+
+        <!-- 指定Publisher -->
+        <Publisher class="Tcp">
+            <Param name="Host" value="##HOST##" />
+            <Param name="Port" value="##PORT##" />
+        </Publisher>
+
+        <!-- <Agent ref="TheAgent" /> -->
+
+        <Logger class="File">
+            <Param name="Path" value="##PATHLOG##" />
+        </Logger>
+    </Test>
+</Peach>

@@ -1,0 +1,33 @@
+Peach Fuzzing Run
+=================
+
+Date of run: 05/23/2023 01:52:49
+Peach Version: 0.0.0.1
+Seed: 63584
+Command line: fuzzdns.xml
+Pit File: fuzzdns.xml
+Strategy: Random
+. Test starting: Default
+
+. Record Iteration 1
+.  Iteration 1 : 05/23/2023 01:52:52
+.  Iteration 100 : 05/23/2023 01:55:42
+.  Iteration 200 : 05/23/2023 01:58:27
+.  Iteration 300 : 05/23/2023 02:01:09
+.  Iteration 400 : 05/23/2023 02:03:56
+.  Iteration 500 : 05/23/2023 02:06:46
+.  Iteration 600 : 05/23/2023 02:09:49
+.  Iteration 700 : 05/23/2023 02:12:32
+.  Iteration 800 : 05/23/2023 02:15:49
+.  Iteration 900 : 05/23/2023 02:18:24
+.  Iteration 1000 : 05/23/2023 02:21:45
+.  Iteration 1100 : 05/23/2023 02:24:56
+.  Iteration 1200 : 05/23/2023 02:27:48
+.  Iteration 1300 : 05/23/2023 02:30:40
+.  Iteration 1400 : 05/23/2023 02:33:11
+.  Iteration 1500 : 05/23/2023 02:36:15
+.  Iteration 1600 : 05/23/2023 02:39:30
+.  Iteration 1700 : 05/23/2023 02:42:14
+.  Iteration 1800 : 05/23/2023 02:45:05
+.  Iteration 1900 : 05/23/2023 02:47:29
+. Test finished: Default
