@@ -10,7 +10,7 @@ index f375069..8171735 100644
 +
  void receive_query(struct listener *listen, time_t now)
  {
-+       if(aaa==10)
++       if(aaa==100)
 +               abort();
 +       aaa++;
    struct dns_header *header = (struct dns_header *)daemon->packet;
